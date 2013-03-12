@@ -1,3 +1,4 @@
+package de.trioinfernale.javacity;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
