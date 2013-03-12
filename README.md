@@ -3,6 +3,7 @@ JavaCity
 
 Ideen:   
   -> (Aufbau-)Simulation   
-  -> Auf System-Entity-Component Konzept basierend   
+  -> Auf System-Entity-Component Konzept basierend    
+  -> Technik: JavaFX, Canvas
 
   
