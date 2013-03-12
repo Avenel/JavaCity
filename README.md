@@ -2,7 +2,7 @@ JavaCity
 ========
 
 Ideen:   
-  -> Simulation   
+  -> (Aufbau-)Simulation   
   -> Auf System-Entity-Component Konzept basierend   
-  -> Aufbausimulation   
+
   
