@@ -1,4 +1,4 @@
-package de.trioinfernale.javacity;
+package de.ka.javacity;
 
 import javafx.application.Application;
 import javafx.scene.*;
