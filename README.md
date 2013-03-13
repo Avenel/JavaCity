@@ -4,7 +4,7 @@ JavaCity
 Ideen:   
   -> (Aufbau-)Simulation   
   -> Auf System-Entity-Component Konzept basierend    
-  -> Technik: JavaFX, Canvas
+  -> Technik: JavaFX, Canvas   
   -> ECSB (=Engine Component System Based) Engine 
 
 Literatur:   
