@@ -1,5 +1,7 @@
 package de.ka.javacity;
 
+import de.ka.javacity.game.Game;
+import de.ka.javacity.game.LocalGame;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,6 +29,9 @@ public class mainApplication extends Application {
 	
 	// KeyEvent Handler 
 	private EventHandler<KeyEvent> keyEventHandler;
+	
+	// Game object
+	private LocalGame game;
 
 	/**
 	 * Create Window
@@ -42,6 +47,10 @@ public class mainApplication extends Application {
 		
 		primaryStage.setScene(createScene());
 		primaryStage.show();
+		
+		// Setup Game
+		Game game = new Game();
+		game.startUp();
 		
 		// Game loop
 		final Duration oneFrameDuration = Duration.millis(1000/60);

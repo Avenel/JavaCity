@@ -1,5 +1,5 @@
 package de.ka.javacity.node;
 
-public interface Node {
+public interface LocalNode {
 
 }

@@ -1,5 +1,5 @@
 package de.ka.javacity.entity;
 
-public interface Entity {
+public interface LocalEntity {
 
 }
