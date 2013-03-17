@@ -1,5 +1,5 @@
 package de.ka.javacity.graphic;
 
-public interface LocalView {
+public interface View {
 
 }

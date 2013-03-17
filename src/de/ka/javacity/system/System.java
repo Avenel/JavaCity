@@ -1,5 +1,5 @@
 package de.ka.javacity.system;
 
-public interface LocalSystem {
+public interface System {
 
 }
