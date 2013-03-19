@@ -96,6 +96,7 @@ public class mainApplication extends Application {
 			public void handle(final KeyEvent keyEvent) {
 				switch (keyEvent.getCode()) {
 				case ESCAPE:
+					System.out.println("Exit Game.");
 					System.exit(0);
 					break;
 				default:
