@@ -1,7 +1,7 @@
 package de.ka.javacity;
 
-import de.ka.javacity.game.Game;
-import de.ka.javacity.game.LocalGame;
+import de.ka.javacity.game.BaseGame;
+import de.ka.javacity.game.AbstractGame;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,58 +16,63 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- * Bomb-Invaders
+ * Main for JavaCity
  */
 public class mainApplication extends Application {
 
 	// MainWindow
 	@SuppressWarnings("unused")
 	private Stage primaryStage;
-	
+
 	// Animation (GameLoop)
 	private Timeline timeline;
-	
-	// KeyEvent Handler 
+
+	// KeyEvent Handler
 	private EventHandler<KeyEvent> keyEventHandler;
-	
+
 	// Game object
-	private LocalGame game;
+	private AbstractGame game;
 
 	/**
 	 * Create Window
 	 */
 	@Override
 	public void start(Stage primaryStage) {
-		
+		// Setup Game
+		this.game = new BaseGame();
+		game.startUp();
+
 		// Setup Stage
-		primaryStage.setTitle("JavaCity");
 		this.primaryStage = primaryStage;
-		primaryStage.setWidth(800);
-		primaryStage.setHeight(600);
-		
+		primaryStage.setTitle(game.getTitle());
+		primaryStage.setWidth(game.getWindow_width());
+		primaryStage.setHeight(game.getWindow_height());
+		primaryStage.setResizable(false);
+		primaryStage.setFullScreen(game.isFullscreen());
+		primaryStage.setX(50);
+		primaryStage.setY(50);
+
+		// Create Scene and show stage
 		primaryStage.setScene(createScene());
 		primaryStage.show();
-		
-		// Setup Game
-		Game game = new Game();
-		game.startUp();
-		
-		// Game loop
-		final Duration oneFrameDuration = Duration.millis(1000/60);
-		final KeyFrame oneFrame = new KeyFrame(oneFrameDuration, new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				// TODO GameLoop
-			}
-		});
 
-		timeline = TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(oneFrame).build();
+		// Initialize game loop
+		final Duration oneFrameDuration = Duration.millis(1000 / 60);
+		final KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
+				new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						// TODO GameLoop
+					}
+				});
+
+		timeline = TimelineBuilder.create().cycleCount(Animation.INDEFINITE)
+				.keyFrames(oneFrame).build();
 		timeline.play();
 
 		initEventHandler(primaryStage);
 	}
 
-	
 	/**
 	 * Create Scene.
 	 * 
@@ -78,25 +83,32 @@ public class mainApplication extends Application {
 		Scene scene = new Scene(g);
 		return scene;
 	}
-	
+
 	/**
 	 * Start EventHandling
-	 * @param primaryStage Hauptanzeigefenster.
+	 * 
+	 * @param primaryStage
+	 *            Hauptanzeigefenster.
 	 */
 	private void initEventHandler(Stage primaryStage) {
 		// KeyHandler
 		keyEventHandler = new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
 				switch (keyEvent.getCode()) {
-					default: System.out.println("KeyPressed");
+				case ESCAPE:
+					System.exit(0);
+					break;
+				default:
+					System.out.println("KeyPressed: "
+							+ keyEvent.getCode().toString());
 				}
 				keyEvent.consume();
 			}
 		};
-			
+
 		primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, keyEventHandler);
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
