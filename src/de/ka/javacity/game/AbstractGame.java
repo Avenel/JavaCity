@@ -1,11 +1,14 @@
 package de.ka.javacity.game;
 
+import javafx.scene.canvas.Canvas;
+
 public abstract class AbstractGame {
 
 	protected String title;
 	protected double window_width;
 	protected double window_height;
 	protected boolean fullscreen;
+	protected Canvas canvas;
 
 	public void startUp() {
 	}
@@ -41,5 +44,19 @@ public abstract class AbstractGame {
 	public void setFullscreen(boolean fullscreen) {
 		this.fullscreen = fullscreen;
 	}
+
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	public void setCanvas(Canvas canvas) {
+		this.canvas = canvas;
+	}
+	
+	public void update() {
+		
+	}
+	
+	public void createTestBlob() {}
 
 }

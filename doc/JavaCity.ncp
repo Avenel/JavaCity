@@ -70,6 +70,13 @@
         <Size width="162" height="216" />
         <Collapsed>True</Collapsed>
       </Entity>
+      <Entity type="Interface">
+        <Name>SystemManager</Name>
+        <Access>Public</Access>
+        <Location left="33" top="552" />
+        <Size width="162" height="216" />
+        <Collapsed>True</Collapsed>
+      </Entity>
     </Entities>
     <Relationships>
       <Relationship type="Association" first="0" second="1">
@@ -120,14 +127,6 @@
         <Direction>Unidirectional</Direction>
         <AssociationType>Association</AssociationType>
       </Relationship>
-      <Relationship type="Association" first="3" second="6">
-        <Label>
-        </Label>
-        <StartOrientation>Horizontal</StartOrientation>
-        <EndOrientation>Horizontal</EndOrientation>
-        <Direction>Unidirectional</Direction>
-        <AssociationType>Aggregation</AssociationType>
-      </Relationship>
       <Relationship type="Association" first="7" second="5">
         <Label>
         </Label>
@@ -164,6 +163,26 @@
         <BendPoint relativeToStartShape="False">
           <X>508</X>
           <Y>335</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="9" second="6">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="3" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>229</X>
+          <Y>575</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Association</AssociationType>

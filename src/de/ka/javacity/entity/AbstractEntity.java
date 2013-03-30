@@ -41,7 +41,7 @@ public abstract class AbstractEntity {
 	}
 	
 	public boolean addComponent(AbstractComponent component) {
-		if (!this.components.isEmpty()) {
+		if (this.components.isEmpty()) {
 			this.components.put(component.getType(), component);
 			return true;
 		}

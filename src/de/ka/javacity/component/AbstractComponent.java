@@ -2,7 +2,7 @@ package de.ka.javacity.component;
 
 public abstract class AbstractComponent {
 
-	private ComponentType type;
+	protected ComponentType type;
 	
 	
 	public ComponentType getType() {

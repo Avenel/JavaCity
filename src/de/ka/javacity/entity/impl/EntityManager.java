@@ -21,8 +21,14 @@ public class EntityManager implements IEntityManager {
 	
 	@Override
 	public AbstractEntity createEntity(AbstractComponent[] components) {
-		// TODO Auto-generated method stub
-		return null;
+		Entity entity = new Entity();
+		
+		for (AbstractComponent component : components) {
+			entity.addComponent(component);
+		}
+		
+		this.familyManager.registerEntityToFamilies(entity);
+		return entity;
 	}
 
 	@Override

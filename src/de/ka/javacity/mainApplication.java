@@ -11,7 +11,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -23,6 +27,8 @@ public class mainApplication extends Application {
 	// MainWindow
 	@SuppressWarnings("unused")
 	private Stage primaryStage;
+
+	private Canvas canvas;
 
 	// Animation (GameLoop)
 	private Timeline timeline;
@@ -38,9 +44,9 @@ public class mainApplication extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) {
+
 		// Setup Game
 		this.game = new BaseGame();
-		game.startUp();
 
 		// Setup Stage
 		this.primaryStage = primaryStage;
@@ -56,13 +62,18 @@ public class mainApplication extends Application {
 		primaryStage.setScene(createScene());
 		primaryStage.show();
 
+		// startup game
+		game.startUp();
+		this.game.createTestBlob();
+		
 		// Initialize game loop
 		final Duration oneFrameDuration = Duration.millis(1000 / 60);
 		final KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
 				new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-						// TODO GameLoop
+						// TODO GameLoop, update Systems
+						game.update();
 					}
 				});
 
@@ -81,6 +92,13 @@ public class mainApplication extends Application {
 	private Scene createScene() {
 		Group g = new Group();
 		Scene scene = new Scene(g);
+
+		this.canvas = new Canvas();
+		canvas.setWidth(game.getWindow_width());
+		canvas.setHeight(game.getWindow_height());
+		g.getChildren().add(canvas);
+		this.game.setCanvas(canvas);
+
 		return scene;
 	}
 

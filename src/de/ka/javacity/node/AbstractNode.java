@@ -10,10 +10,11 @@ import de.ka.javacity.system.FamilyName;
  * 
  */
 public abstract class AbstractNode {
-	private FamilyName name;
+	protected FamilyName name;
 	
 	
 	public void addEntity(AbstractEntity entity){}
+	
 	public AbstractEntity removeEntity(){
 		return null;
 	}

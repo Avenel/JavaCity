@@ -1,11 +1,13 @@
 package de.ka.javacity.system.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.ka.javacity.entity.AbstractEntity;
 import de.ka.javacity.node.AbstractNode;
+import de.ka.javacity.node.impl.RenderNode;
 import de.ka.javacity.system.FamilyName;
 import de.ka.javacity.system.IFamilyManager;
 
@@ -19,9 +21,11 @@ public class FamilyManager implements IFamilyManager {
 	public FamilyManager() {
 		// initialize available families, add all available families
 		this.availableFamilies = new HashMap<FamilyName, AbstractNode>();
+		this.availableFamilies.put(FamilyName.RENDER, new RenderNode());
 		
 		// initialize family list, add empty lists for each available family
 		this.families = new HashMap<FamilyName, List<AbstractNode>>();
+		this.families.put(FamilyName.RENDER, new ArrayList<AbstractNode>());
 	}
 	
 	@Override
