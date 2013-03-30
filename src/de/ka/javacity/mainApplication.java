@@ -1,7 +1,7 @@
 package de.ka.javacity;
 
-import de.ka.javacity.game.BaseGame;
 import de.ka.javacity.game.AbstractGame;
+import de.ka.javacity.game.impl.BaseGame;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

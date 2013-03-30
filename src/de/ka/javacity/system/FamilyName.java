@@ -8,5 +8,5 @@ package de.ka.javacity.system;
  * 
  */
 public enum FamilyName {
-	BASIC
+	BASIC;
 }
