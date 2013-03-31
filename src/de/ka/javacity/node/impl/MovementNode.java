@@ -1,43 +1,36 @@
 package de.ka.javacity.node.impl;
 
 import de.ka.javacity.component.ComponentType;
-import de.ka.javacity.component.impl.Display2D;
+import de.ka.javacity.component.impl.Motion2D;
 import de.ka.javacity.component.impl.Position2D;
 import de.ka.javacity.entity.AbstractEntity;
 import de.ka.javacity.node.AbstractNode;
 import de.ka.javacity.system.FamilyName;
 
-public class RenderNode extends AbstractNode {
-	private Display2D display;
-	private Position2D position;
+public class MovementNode extends AbstractNode {
 
-	public RenderNode() {
+	private Position2D position;
+	private Motion2D motion;
+
+	public MovementNode() {
 		super();
-		this.name = FamilyName.RENDER;
+		this.name = FamilyName.MOVEMENT;
 	}
 	
-	public void addEntity(AbstractEntity entity){
-		this.display = (Display2D) entity.getComponents().get(ComponentType.DISPLAY);
+	public void addEntity(AbstractEntity entity) {
 		this.position = (Position2D) entity.getComponents().get(ComponentType.POSITION2D);
+		this.motion = (Motion2D) entity.getComponents().get(ComponentType.MOTION2D);
 	}
 	
+	@Override
 	public boolean isEntityMember(AbstractEntity entity) {
-		if (entity.getComponents().containsKey(ComponentType.DISPLAY) &&
-			entity.getComponents().containsKey(ComponentType.POSITION2D)) {
+		if (entity.getComponents().containsKey(ComponentType.POSITION2D) &&
+			entity.getComponents().containsKey(ComponentType.MOTION2D) ) { 
 			return true;
 		}
-		
 		return false;
 	}
-	
-	public Display2D getDisplay() {
-		return display;
-	}
 
-	public void setDisplay(Display2D display) {
-		this.display = display;
-	}
-	
 	public Position2D getPosition() {
 		return position;
 	}
@@ -45,5 +38,12 @@ public class RenderNode extends AbstractNode {
 	public void setPosition(Position2D position) {
 		this.position = position;
 	}
+	
+	public Motion2D getMotion() {
+		return motion;
+	}
 
+	public void setMotion(Motion2D motion) {
+		this.motion = motion;
+	}
 }

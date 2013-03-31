@@ -12,10 +12,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -38,7 +36,21 @@ public class mainApplication extends Application {
 
 	// Game object
 	private AbstractGame game;
-
+	
+	// FPS stuff
+	private double fps=0;
+	private double FPS=60;
+	private int fpsCount=0;
+	private int SAMPLE_SIZE=30;
+	private long startTime;
+	private double displayFPS=0.0;
+	private double SPRINGNESS=0.2;
+	private Text fpsText;
+	
+	// blob counter
+	private int blobCount=0;
+	private Text blobText;
+	
 	/**
 	 * Create Window
 	 */
@@ -56,8 +68,8 @@ public class mainApplication extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.setFullScreen(game.isFullscreen());
 		primaryStage.setX(50);
-		primaryStage.setY(50);
-
+		primaryStage.setY(50);		
+		
 		// Create Scene and show stage
 		primaryStage.setScene(createScene());
 		primaryStage.show();
@@ -66,14 +78,36 @@ public class mainApplication extends Application {
 		game.startUp();
 		this.game.createTestBlob();
 		
+		// fps
+		startTime = java.lang.System.currentTimeMillis();
+		
 		// Initialize game loop
-		final Duration oneFrameDuration = Duration.millis(1000 / 60);
+		final Duration oneFrameDuration = Duration.millis(1000 / this.FPS);
 		final KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
 				new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
 						// TODO GameLoop, update Systems
 						game.update();
+						
+						// create blobs
+						for (int j=0;j<=1;j++) {
+							game.createTestBlob();
+							blobCount++;
+						}
+
+						// calculate and display FPS
+						fpsCount++;
+                        if(fpsCount > SAMPLE_SIZE) {
+							fps = fpsCount / ((java.lang.System.currentTimeMillis() - startTime) / 1000.0 ) ;
+                            fpsCount = 0;
+                            startTime = java.lang.System.currentTimeMillis();
+                            displayFPS += (fps - displayFPS) * SPRINGNESS;
+                        }
+                        
+                        fpsText.setText("FPS: "+String.valueOf(Math.rint(displayFPS)));
+                        blobText.setText("Blobs: "+String.valueOf(blobCount));
+						
 					}
 				});
 
@@ -93,10 +127,20 @@ public class mainApplication extends Application {
 		Group g = new Group();
 		Scene scene = new Scene(g);
 
+		// Setup Canvas
 		this.canvas = new Canvas();
 		canvas.setWidth(game.getWindow_width());
 		canvas.setHeight(game.getWindow_height());
 		g.getChildren().add(canvas);
+		
+		// Setup FPS & blob count
+		this.fpsText = new Text(550, 50, "FPS: "+String.valueOf(this.displayFPS));
+		this.blobText = new Text(550, 80, "Blobs: "+String.valueOf(this.blobCount));
+		
+		g.getChildren().add(this.fpsText);
+		g.getChildren().add(this.blobText);
+		
+		// Set game-canvas
 		this.game.setCanvas(canvas);
 
 		return scene;

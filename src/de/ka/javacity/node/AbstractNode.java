@@ -11,12 +11,14 @@ import de.ka.javacity.system.FamilyName;
  */
 public abstract class AbstractNode {
 	protected FamilyName name;
+	protected AbstractEntity entity;
 	
-	
-	public void addEntity(AbstractEntity entity){}
+	public abstract void addEntity(AbstractEntity entity);
 	
 	public AbstractEntity removeEntity(){
-		return null;
+		AbstractEntity toRemovedEntity = this.entity;
+		this.entity = null;
+		return toRemovedEntity;
 	}
 
 	/**
@@ -24,11 +26,9 @@ public abstract class AbstractNode {
 	 * ein Mitglied dieser Familie zu sein.
 	 * 
 	 * @param entity
-	 * @return
+	 * @return true/false
 	 */
-	public boolean isEntityMember(AbstractEntity entity) {
-		return false;
-	}
+	public abstract boolean isEntityMember(AbstractEntity entity);
 	
 	public FamilyName getName() {
 		return name;

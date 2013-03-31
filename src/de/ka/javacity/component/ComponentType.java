@@ -4,5 +4,7 @@ public enum ComponentType {
 	// Abstract GameObject types, e.g. House, Street ...
 	BUILDING,
 	STREET,
-	DISPLAY;
+	DISPLAY,
+	POSITION2D,
+	MOTION2D;
 }
