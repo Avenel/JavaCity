@@ -35,20 +35,17 @@ public class MovementSystem implements ISystem {
 			double px = position.getX();
 			double py = position.getY();
 			
-			if (px < 0 || px > 400) {
+			if (px < 0 || px > 800) {
 				 motion.setVx(-motion.getVx());
 			}
 				 
-			if (py < 0 || py > 400) {
+			if (py < 0 || py > 600) {
 				 motion.setVy(-motion.getVy());
 			}
 			
 			// set new positions
-			position.setX(position.getX()+motion.getVx()*motion.getVelocity());
-			position.setY(position.getY()+motion.getVy()*motion.getVelocity());
-			
-			
-			
+			position.setX(position.getX()+(motion.getVx()*motion.getVelocity()));
+			position.setY(position.getY()+(motion.getVy()*motion.getVelocity()));
 		}
 	}
 	

@@ -37,10 +37,10 @@ public class BaseGame extends AbstractGame {
 		
 		// Initialize SystemManager incl. Systems
 		this.systemManager = new SystemManager();
-		RenderSystem renderSystem = new RenderSystem(familyManager, canvas);
+		//RenderSystem renderSystem = new RenderSystem(familyManager, canvas);
 		MovementSystem movementSystem = new MovementSystem(familyManager);
 		
-		this.systemManager.addSystem(renderSystem);
+		//this.systemManager.addSystem(renderSystem);
 		this.systemManager.addSystem(movementSystem);
 		
 		// TODO Initialize Gamestatus/Gamelogic
@@ -58,7 +58,7 @@ public class BaseGame extends AbstractGame {
 		Motion2D motion = new Motion2D();
 		motion.setVx(Math.random());
 		motion.setVy(Math.random());
-		motion.setVelocity(Math.random()*4);
+		motion.setVelocity(4.0);
 		
 		AbstractComponent components[] = {display, position, motion};
 		this.entityManager.createEntity(components);

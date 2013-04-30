@@ -1,5 +1,6 @@
 package de.ka.javacity;
 
+import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.game.AbstractGame;
 import de.ka.javacity.game.impl.BaseGame;
 import javafx.animation.Animation;
@@ -10,9 +11,19 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
+import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.CullFace;
+import javafx.scene.shape.Cylinder;
+import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.Shape3D;
+import javafx.scene.shape.Sphere;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -36,26 +47,30 @@ public class mainApplication extends Application {
 
 	// Game object
 	private AbstractGame game;
-	
+
 	// FPS stuff
-	private double fps=0;
-	private double FPS=60;
-	private int fpsCount=0;
-	private int SAMPLE_SIZE=30;
+	private double fps = 60;
+	private double FPS = 60;
+	private int fpsCount = 0;
+	private int SAMPLE_SIZE = 30;
 	private long startTime;
-	private double displayFPS=0.0;
-	private double SPRINGNESS=0.2;
+	private long endTime;
+	private long diffTime = 1000L / 60L;
+	private double displayFPS = 0.0;
+	private double SPRINGNESS = 0.5;
 	private Text fpsText;
-	
+
 	// blob counter
-	private int blobCount=0;
+	private int blobCount = 0;
 	private Text blobText;
-	
+
+	private GameCamera gameCam;
+
 	/**
 	 * Create Window
 	 */
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(final Stage primaryStage) {
 
 		// Setup Game
 		this.game = new BaseGame();
@@ -68,51 +83,57 @@ public class mainApplication extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.setFullScreen(game.isFullscreen());
 		primaryStage.setX(50);
-		primaryStage.setY(50);		
-		
+		primaryStage.setY(50);
+
 		// Create Scene and show stage
-		primaryStage.setScene(createScene());
+		Scene primaryScene = createScene();
+		primaryStage.setScene(primaryScene);
 		primaryStage.show();
+		
+		gameCam.init(primaryStage, primaryScene);
 
 		// startup game
 		game.startUp();
-		this.game.createTestBlob();
-		
+
 		// fps
 		startTime = java.lang.System.currentTimeMillis();
-		
+
 		// Initialize game loop
-		final Duration oneFrameDuration = Duration.millis(1000 / this.FPS);
-		final KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
+		Duration oneFrameDuration = Duration.millis(1000.0 / FPS);
+		KeyFrame oneFrame = new KeyFrame(oneFrameDuration,
 				new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-						// TODO GameLoop, update Systems
+						if (fps < FPS-5) {
+							timeline.stop();
+						}
+						
+						// update Systems
 						game.update();
 						
-						// create blobs
-						for (int j=0;j<=1;j++) {
-							game.createTestBlob();
-							blobCount++;
-						}
-
 						// calculate and display FPS
 						fpsCount++;
-                        if(fpsCount > SAMPLE_SIZE) {
-							fps = fpsCount / ((java.lang.System.currentTimeMillis() - startTime) / 1000.0 ) ;
-                            fpsCount = 0;
-                            startTime = java.lang.System.currentTimeMillis();
-                            displayFPS += (fps - displayFPS) * SPRINGNESS;
-                        }
-                        
-                        fpsText.setText("FPS: "+String.valueOf(Math.rint(displayFPS)));
-                        blobText.setText("Blobs: "+String.valueOf(blobCount));
+						if (fpsCount > SAMPLE_SIZE) {
+							endTime = java.lang.System.currentTimeMillis();
+							diffTime = (endTime - startTime);
+							fps = fpsCount / (diffTime / 1000.0);
+							fpsCount = 0;
+							startTime = java.lang.System.currentTimeMillis();
+							displayFPS += (fps - displayFPS) * SPRINGNESS;
+						}
+
+						primaryStage.setTitle(game.getTitle() + "FPS: "+ String.valueOf(Math.floor(displayFPS)));
 						
+						timeline.play();
 					}
 				});
 
-		timeline = TimelineBuilder.create().cycleCount(Animation.INDEFINITE)
-				.keyFrames(oneFrame).build();
+//		timeline = TimelineBuilder.create().cycleCount(Animation.INDEFINITE)
+//				.keyFrames(oneFrame).build();
+		timeline = new Timeline(FPS);
+		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.getKeyFrames().add(oneFrame);
+		
 		timeline.play();
 
 		initEventHandler(primaryStage);
@@ -124,22 +145,50 @@ public class mainApplication extends Application {
 	 * @return Scene
 	 */
 	private Scene createScene() {
-		Group g = new Group();
-		Scene scene = new Scene(g);
+		// Setup Camera
+    	gameCam = new GameCamera();
+    	
+    	// Create new Scene
+    	Scene scene = new Scene(gameCam.getCamOffset(), 800, 800, true);
+        scene.setFill(Color.rgb(10, 10, 40));
+        scene.setCamera(new PerspectiveCamera());
+        
+        // Setup 3d Objects
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.LIGHTGRAY);
+        material.setSpecularColor(Color.rgb(30, 30, 30));
 
-		// Setup Canvas
-		this.canvas = new Canvas();
-		canvas.setWidth(game.getWindow_width());
-		canvas.setHeight(game.getWindow_height());
-		g.getChildren().add(canvas);
-		
+        Shape3D[] meshView = new Shape3D[] {
+            new Box(200, 200, 200),
+            new Sphere(100),
+            new Cylinder(100, 200),
+        };
+
+        for (int i=0; i!=3; ++i) {
+            meshView[i].setMaterial(material);
+            meshView[i].setTranslateX((i + 1) * 220);
+            meshView[i].setTranslateY(500);
+            meshView[i].setTranslateZ(20);
+            meshView[i].setDrawMode(DrawMode.FILL);
+            meshView[i].setCullFace(CullFace.BACK);
+        };
+        
+        // Setup light
+        PointLight pointLight = new PointLight(Color.ANTIQUEWHITE);
+        pointLight.setTranslateX(800);
+        pointLight.setTranslateY(-100);
+        pointLight.setTranslateZ(-1000);
+
+        Group root = new Group(meshView);
+        gameCam.addNodes(root);
+        gameCam.addNodes(pointLight);
+        
 		// Setup FPS & blob count
-		this.fpsText = new Text(550, 50, "FPS: "+String.valueOf(this.displayFPS));
-		this.blobText = new Text(550, 80, "Blobs: "+String.valueOf(this.blobCount));
-		
-		g.getChildren().add(this.fpsText);
-		g.getChildren().add(this.blobText);
-		
+		this.fpsText = new Text(550, 50, "FPS: "
+				+ String.valueOf(this.displayFPS));
+
+		gameCam.addNodes(this.fpsText);
+
 		// Set game-canvas
 		this.game.setCanvas(canvas);
 
