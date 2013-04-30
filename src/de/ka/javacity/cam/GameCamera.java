@@ -263,7 +263,7 @@ public class GameCamera {
      * @param newNode
      */
     public void addNodes(Node newNode) {
-        this.cam.getChildren().add(newNode);
+       this.cam.getChildren().add(newNode);
     }
     
     

@@ -5,6 +5,7 @@ public enum ComponentType {
 	BUILDING,
 	STREET,
 	DISPLAY,
+	DISPLAY3D,
 	POSITION2D,
 	MOTION2D;
 }

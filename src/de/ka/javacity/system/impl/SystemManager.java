@@ -1,22 +1,22 @@
 package de.ka.javacity.system.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.ka.javacity.system.ISystem;
 import de.ka.javacity.system.ISystemManager;
 
 public class SystemManager implements ISystemManager{
 
-	private List<ISystem> systems;
+	private Map<String, ISystem> systems;
 	
 	public SystemManager() {
-		this.systems = new ArrayList<ISystem>();
+		this.systems = new HashMap<String, ISystem>();
 	}
 	
 	@Override
 	public void addSystem(ISystem system) {
-		this.systems.add(system);
+		this.systems.put(system.getClass().toString(), system);
 	}
 
 	@Override
@@ -26,9 +26,14 @@ public class SystemManager implements ISystemManager{
 
 	@Override
 	public void updateSystems() {
-		for (ISystem system : this.systems) {
+		for (ISystem system : this.systems.values()) {
 			system.update();
 		}
+	}
+
+	@Override
+	public ISystem getSystem(String name) {
+		return this.systems.get(name);
 	}
 
 }

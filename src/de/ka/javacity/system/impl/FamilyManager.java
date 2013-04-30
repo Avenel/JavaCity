@@ -9,6 +9,7 @@ import de.ka.javacity.entity.AbstractEntity;
 import de.ka.javacity.node.AbstractNode;
 import de.ka.javacity.node.impl.MovementNode;
 import de.ka.javacity.node.impl.RenderNode;
+import de.ka.javacity.node.impl.RenderNode3D;
 import de.ka.javacity.system.FamilyName;
 import de.ka.javacity.system.IFamilyManager;
 
@@ -23,11 +24,13 @@ public class FamilyManager implements IFamilyManager {
 		// initialize available families, add all available families
 		this.availableFamilies = new HashMap<FamilyName, AbstractNode>();
 		this.availableFamilies.put(FamilyName.RENDER, new RenderNode());
+		this.availableFamilies.put(FamilyName.RENDER3D, new RenderNode3D());
 		this.availableFamilies.put(FamilyName.MOVEMENT, new MovementNode());
 		
 		// initialize family list, add empty lists for each available family
 		this.families = new HashMap<FamilyName, List<AbstractNode>>();
 		this.families.put(FamilyName.RENDER, new ArrayList<AbstractNode>());
+		this.families.put(FamilyName.RENDER3D, new ArrayList<AbstractNode>());
 		this.families.put(FamilyName.MOVEMENT, new ArrayList<AbstractNode>());
 	}
 	

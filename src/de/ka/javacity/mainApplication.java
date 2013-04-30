@@ -91,10 +91,12 @@ public class mainApplication extends Application {
 		primaryStage.show();
 		
 		gameCam.init(primaryStage, primaryScene);
-
+	
 		// startup game
-		game.startUp();
-
+		game.startUp(gameCam);
+		
+		game.createTestBlob();
+		
 		// fps
 		startTime = java.lang.System.currentTimeMillis();
 
@@ -108,7 +110,7 @@ public class mainApplication extends Application {
 							timeline.stop();
 						}
 						
-						// update Systems
+						// update Systems		
 						game.update();
 						
 						// calculate and display FPS
@@ -153,41 +155,17 @@ public class mainApplication extends Application {
         scene.setFill(Color.rgb(10, 10, 40));
         scene.setCamera(new PerspectiveCamera());
         
-        // Setup 3d Objects
-        PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(Color.LIGHTGRAY);
-        material.setSpecularColor(Color.rgb(30, 30, 30));
-
-        Shape3D[] meshView = new Shape3D[] {
-            new Box(200, 200, 200),
-            new Sphere(100),
-            new Cylinder(100, 200),
-        };
-
-        for (int i=0; i!=3; ++i) {
-            meshView[i].setMaterial(material);
-            meshView[i].setTranslateX((i + 1) * 220);
-            meshView[i].setTranslateY(500);
-            meshView[i].setTranslateZ(20);
-            meshView[i].setDrawMode(DrawMode.FILL);
-            meshView[i].setCullFace(CullFace.BACK);
-        };
-        
         // Setup light
         PointLight pointLight = new PointLight(Color.ANTIQUEWHITE);
         pointLight.setTranslateX(800);
         pointLight.setTranslateY(-100);
         pointLight.setTranslateZ(-1000);
 
-        Group root = new Group(meshView);
-        gameCam.addNodes(root);
         gameCam.addNodes(pointLight);
         
 		// Setup FPS & blob count
 		this.fpsText = new Text(550, 50, "FPS: "
 				+ String.valueOf(this.displayFPS));
-
-		gameCam.addNodes(this.fpsText);
 
 		// Set game-canvas
 		this.game.setCanvas(canvas);

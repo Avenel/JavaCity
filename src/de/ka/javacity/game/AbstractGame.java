@@ -1,5 +1,6 @@
 package de.ka.javacity.game;
 
+import de.ka.javacity.cam.GameCamera;
 import javafx.scene.canvas.Canvas;
 
 public abstract class AbstractGame {
@@ -10,7 +11,7 @@ public abstract class AbstractGame {
 	protected boolean fullscreen;
 	protected Canvas canvas;
 
-	public void startUp() {
+	public void startUp(GameCamera gameCam) {
 	}
 
 	public double getWindow_width() {
