@@ -7,6 +7,10 @@ Ideen:
   -> Technik: JavaFX, Canvas   
   -> ECSB (=Engine Component System Based) Engine 
 
+Grafik:
+   -> http://stonehearth.net/
+   -> http://wollay.blogspot.co.uk/
+
 Literatur:   
 http://www.tomseysdavies.com/2011/01/23/entity-systems/    
 http://carlfx.wordpress.com/2012/04/09/javafx-2-gametutorial-part-2/    
