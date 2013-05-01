@@ -7,7 +7,7 @@ Ideen:
   -> Technik: JavaFX, Canvas   
   -> ECSB (=Engine Component System Based) Engine 
 
-Grafik:
+Grafik:      
    -> http://stonehearth.net/     
    -> http://wollay.blogspot.co.uk/
 
