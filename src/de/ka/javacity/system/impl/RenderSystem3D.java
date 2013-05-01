@@ -35,7 +35,6 @@ public class RenderSystem3D implements ISystem {
 	
 	public void addObjectToWorld(IView3D view) {
 		this.gameCam.addNodes((Node) view);
-		System.out.println("Added");
 	}
 
 }

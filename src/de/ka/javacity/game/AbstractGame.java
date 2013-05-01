@@ -58,6 +58,6 @@ public abstract class AbstractGame {
 		
 	}
 	
-	public void createTestBlob() {}
+	public void createTestBlob(double vx, double vy) {}
 
 }

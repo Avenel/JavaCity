@@ -1,6 +1,11 @@
 package de.ka.javacity.game.impl;
 
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.CullFace;
+import javafx.scene.shape.DrawMode;
 import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.component.AbstractComponent;
 import de.ka.javacity.component.impl.Display2D;
@@ -42,6 +47,7 @@ public class BaseGame extends AbstractGame {
 		
 		// Initialize SystemManager incl. Systems
 		this.systemManager = new SystemManager();
+	
 		RenderSystem3D renderSystem = new RenderSystem3D(familyManager, gameCam);
 		MovementSystem movementSystem = new MovementSystem(familyManager);
 		
@@ -52,28 +58,29 @@ public class BaseGame extends AbstractGame {
 	
 	}
 	
-	public void createTestBlob() {
+	public void createTestBlob(double vx, double vy) {
 		// Test object: blob
 		Display3D display = new Display3D();
 		display.setView(new Blob3D());
 		
 		Position2D position = new Position2D();
-		position.setX(Math.random()*400);
-		position.setY(Math.random()*400);
+		position.setX(0);
+		position.setY(0);
 		
 		Motion2D motion = new Motion2D();
-		motion.setVx(Math.random());
-		motion.setVy(Math.random());
+		motion.setVx(vx);//Math.random());
+		motion.setVy(vy);//Math.random());
 		motion.setVelocity(4.0);
 		
 		AbstractComponent components[] = {display, position, motion};
 		this.entityManager.createEntity(components);
 		RenderSystem3D renderSystem = (RenderSystem3D) this.systemManager.getSystem(RenderSystem3D.class.toString());
-		
-		System.out.println("Add blob");
+	
 		if (renderSystem != null) {
-			renderSystem.addObjectToWorld(display.getView());	
+			renderSystem.addObjectToWorld(display.getView());
 		}
+		
+		
 	}
 	
 	public void update() {

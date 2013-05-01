@@ -94,8 +94,7 @@ public class mainApplication extends Application {
 	
 		// startup game
 		game.startUp(gameCam);
-		
-		game.createTestBlob();
+
 		
 		// fps
 		startTime = java.lang.System.currentTimeMillis();
@@ -107,7 +106,14 @@ public class mainApplication extends Application {
 					@Override
 					public void handle(ActionEvent event) {
 						if (fps < FPS-5) {
-							timeline.stop();
+							//timeline.stop();
+						}
+						
+						if (blobCount < 10000) {
+							for (int i=0; i<10; i++) {
+								game.createTestBlob(Math.random(), Math.random());
+								blobCount++;
+							}
 						}
 						
 						// update Systems		
@@ -124,9 +130,11 @@ public class mainApplication extends Application {
 							displayFPS += (fps - displayFPS) * SPRINGNESS;
 						}
 
-						primaryStage.setTitle(game.getTitle() + "FPS: "+ String.valueOf(Math.floor(displayFPS)));
+						primaryStage.setTitle(game.getTitle() + "FPS: "+ String.valueOf(Math.floor(displayFPS)) + " Blobs: " +  String.valueOf(blobCount));
 						
-						timeline.play();
+						if (fps < FPS-5) {
+							//timeline.play();
+						}
 					}
 				});
 

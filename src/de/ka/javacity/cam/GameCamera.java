@@ -64,18 +64,10 @@ public class GameCamera {
     /**
         Initial Setup 
     **/
-    public void init(Stage stage, Scene scene) {
-        double halfSceneWidth = scene.getWidth()/2.0;
-        double halfSceneHeight = scene.getHeight()/2.0;
-        cam.p.setX(halfSceneWidth);
-        cam.ip.setX(-halfSceneWidth);
-        cam.p.setY(halfSceneHeight);
-        cam.ip.setY(-halfSceneHeight);
-
-        frameCam(stage, scene);
+    public void init(Stage stage, Scene scene) {        
         camOffset.getChildren().add(cam);
         resetCam();
-
+        
         // Adding EventHandlers
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
@@ -114,13 +106,19 @@ public class GameCamera {
                 if (me.isAltDown() && me.isPrimaryButtonDown()) {
                     double rzAngle = cam.rz.getAngle();
                     cam.rz.setAngle(rzAngle - mouseDeltaX);
+                    System.out.println("RZ: " + (rzAngle - mouseDeltaX));
                 }
-                else if (me.isPrimaryButtonDown()) {
+                else if (me.isShiftDown() && me.isPrimaryButtonDown()) {
                     double ryAngle = cam.ry.getAngle();
                     cam.ry.setAngle(ryAngle - mouseDeltaX);
-                    double rxAngle = cam.rx.getAngle();
-                    cam.rx.setAngle(rxAngle + mouseDeltaY);
+                    System.out.println("RY: " + (ryAngle - mouseDeltaX));
                 }
+                else if (me.isPrimaryButtonDown()) {
+                    double rxAngle = cam.rx.getAngle();
+                    cam.rx.setAngle(rxAngle - mouseDeltaX);
+                    System.out.println("RX: " + (rxAngle - mouseDeltaX));
+                }
+                
             }
         });
         
@@ -225,24 +223,17 @@ public class GameCamera {
         resetCam
     **/
     public void resetCam() {
-        cam.t.setX(0.0);
-        cam.t.setY(0.0);
-        cam.t.setZ(0.0);
-        cam.rx.setAngle(45.0);
-        cam.ry.setAngle(-7.0);
+        cam.t.setX(-20.0);
+        cam.t.setY(-20.0);
+        cam.t.setZ(100.0);
+        
+        cam.rx.setAngle(0.0);
+        cam.ry.setAngle(0.0);
         cam.rz.setAngle(0.0);
-        cam.s.setX(1.25);
-        cam.s.setY(1.25);
-        cam.s.setZ(1.25);
-
-
-        cam.p.setX(0.0);
-        cam.p.setY(0.0);
-        cam.p.setZ(0.0);
-
-        cam.ip.setX(0.0);
-        cam.ip.setY(0.0);
-        cam.ip.setZ(0.0);
+        
+        cam.s.setX(1.0);
+        cam.s.setY(1.0);
+        cam.s.setZ(1.0);
 
         final Bounds bounds = cam.getBoundsInLocal();
         final double pivotX = bounds.getMinX() + bounds.getWidth() / 2;
