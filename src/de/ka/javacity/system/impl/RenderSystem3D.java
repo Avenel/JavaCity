@@ -2,8 +2,6 @@ package de.ka.javacity.system.impl;
 
 import java.util.ArrayList;
 
-import javafx.scene.Node;
-
 import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.graphic.IView3D;
 import de.ka.javacity.node.AbstractNode;
@@ -31,10 +29,6 @@ public class RenderSystem3D implements ISystem {
 			RenderNode3D renderNode = (RenderNode3D) node;
 			renderNode.getDisplay().getView().draw(renderNode.getPosition().getX(), renderNode.getPosition().getY(), 0, 0, 0, 0);
 		}
-	}
-	
-	public void addObjectToWorld(IView3D view) {
-		this.gameCam.addNodes((Node) view);
 	}
 
 }

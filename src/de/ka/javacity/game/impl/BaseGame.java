@@ -1,11 +1,5 @@
 package de.ka.javacity.game.impl;
 
-import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.CullFace;
-import javafx.scene.shape.DrawMode;
 import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.component.AbstractComponent;
 import de.ka.javacity.component.impl.Display2D;
@@ -58,29 +52,22 @@ public class BaseGame extends AbstractGame {
 	
 	}
 	
-	public void createTestBlob(double vx, double vy) {
+	public void createTestBlob(double x, double y) {
 		// Test object: blob
 		Display3D display = new Display3D();
 		display.setView(new Blob3D());
 		
 		Position2D position = new Position2D();
-		position.setX(0);
-		position.setY(0);
+		position.setX(x);
+		position.setY(y);
 		
 		Motion2D motion = new Motion2D();
-		motion.setVx(vx);//Math.random());
-		motion.setVy(vy);//Math.random());
+		motion.setVx(2.5);//Math.random());
+		motion.setVy(2.5);//Math.random());
 		motion.setVelocity(4.0);
 		
 		AbstractComponent components[] = {display, position, motion};
-		this.entityManager.createEntity(components);
-		RenderSystem3D renderSystem = (RenderSystem3D) this.systemManager.getSystem(RenderSystem3D.class.toString());
-	
-		if (renderSystem != null) {
-			renderSystem.addObjectToWorld(display.getView());
-		}
-		
-		
+		this.entityManager.createEntity(components);		
 	}
 	
 	public void update() {
