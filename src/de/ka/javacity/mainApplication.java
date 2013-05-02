@@ -17,7 +17,7 @@ public class MainApplication {
 	private long lastFPS;
 	private int fps;
 	private int actualFps;
-	private int maxBlobs = 1000;
+	private int maxBlobs = 2500;
 
 	public MainApplication() {
 		
