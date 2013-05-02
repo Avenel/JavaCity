@@ -7,5 +7,7 @@ public enum ComponentType {
 	DISPLAY,
 	DISPLAY3D,
 	POSITION2D,
-	MOTION2D;
+	POSITION3D,
+	MOTION2D,
+	MOTION3D;
 }

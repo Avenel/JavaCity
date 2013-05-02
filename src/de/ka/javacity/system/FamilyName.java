@@ -11,5 +11,6 @@ public enum FamilyName {
 	BASIC,
 	RENDER,
 	RENDER3D,
-	MOVEMENT;
+	MOVEMENT,
+	MOVEMENT3D;
 }

@@ -17,6 +17,7 @@ public class MainApplication {
 	private long lastFPS;
 	private int fps;
 	private int actualFps;
+	private int maxBlobs = 1000;
 
 	public MainApplication() {
 		
@@ -30,16 +31,18 @@ public class MainApplication {
 		try {
 			Display.setDisplayMode(new DisplayMode(game.getWindow_width(), game.getWindow_height()));
 			Display.setTitle(game.getTitle());
+			Display.setFullscreen(game.isFullscreen());
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
+			Display.destroy();
 			System.exit(1);
 		}
 		
 		// init OpenGl (First, just 2D stuff)
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 800, 600, 0, 1, -1);
+		GL11.glOrtho(0, 800, 600, 0, 20, -20);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
 		
@@ -56,22 +59,19 @@ public class MainApplication {
 			
 			// UpdateWorld
 			// More Blobs!
-			for (int i=0; i<10; i++) {
+			for (int i=0; i<10 && blobCount < maxBlobs ; i++) {
 				game.createTestBlob(0, 0);
 				blobCount++;
 			}
-			
+						
+			// Update everything, includes rendering objects
 			game.update();
-			
-			// Render OpenGL
 			
 			// Update fps
 			this.updateFPS();
 			
 			// Show some debug information in titlebar
 			Display.setTitle(game.getTitle() + ", Blobs: " + blobCount + ", FPS: " + this.actualFps);
-			
-			
 			
 			// Update Display, sync to 60 FPS
 			Display.update();
@@ -91,7 +91,7 @@ public class MainApplication {
 	}
 	
 	/**
-	 * Calculate the FPS and set it in the title bar
+	 * Calculate the FPS 
 	 */
 	public void updateFPS() {
 		if (getTime() - lastFPS > 1000) {
@@ -109,4 +109,5 @@ public class MainApplication {
 	public static void main(String[] args) {
 		new MainApplication();
 	}
+	
 }

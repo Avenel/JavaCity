@@ -1,10 +1,14 @@
 package de.ka.javacity.game.impl;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import de.ka.javacity.component.AbstractComponent;
 import de.ka.javacity.component.impl.Display2D;
 import de.ka.javacity.component.impl.Display3D;
 import de.ka.javacity.component.impl.Motion2D;
+import de.ka.javacity.component.impl.Motion3D;
 import de.ka.javacity.component.impl.Position2D;
+import de.ka.javacity.component.impl.Position3D;
 import de.ka.javacity.entity.IEntityManager;
 import de.ka.javacity.entity.impl.EntityManager;
 import de.ka.javacity.game.AbstractGame;
@@ -13,6 +17,7 @@ import de.ka.javacity.graphic.impl.Blob3D;
 import de.ka.javacity.system.IFamilyManager;
 import de.ka.javacity.system.ISystemManager;
 import de.ka.javacity.system.impl.FamilyManager;
+import de.ka.javacity.system.impl.Movement3DSystem;
 import de.ka.javacity.system.impl.MovementSystem;
 import de.ka.javacity.system.impl.RenderSystem;
 import de.ka.javacity.system.impl.RenderSystem3D;
@@ -41,8 +46,8 @@ public class BaseGame extends AbstractGame {
 		// Initialize SystemManager incl. Systems
 		this.systemManager = new SystemManager();
 	
-		RenderSystem renderSystem = new RenderSystem(familyManager);
-		MovementSystem movementSystem = new MovementSystem(familyManager);
+		RenderSystem3D renderSystem = new RenderSystem3D(familyManager);
+		Movement3DSystem movementSystem = new Movement3DSystem(familyManager);
 		
 		this.systemManager.addSystem(renderSystem);
 		this.systemManager.addSystem(movementSystem);
@@ -53,18 +58,15 @@ public class BaseGame extends AbstractGame {
 	
 	public void createTestBlob(float x, float y) {
 		// Test object: blob
-		Display2D display = new Display2D();
-		display.setView(new Blob());
+		Display3D display = new Display3D();
+		display.setView(new Blob3D());
 		
-		Position2D position = new Position2D();
-		position.setX(x);
-		position.setY(y);
+		Position3D position = new Position3D(x, y, 0);
 		
-		Motion2D motion = new Motion2D();
-		motion.setVx((float)Math.random());
-		motion.setVy((float)Math.random());
-		motion.setVelocity(4.0f);
-		
+		Motion3D motion = new Motion3D();
+		motion.setVx((float)Math.random() * 5.0f);
+		motion.setVy((float)Math.random() * 5.0f);
+				
 		AbstractComponent components[] = {display, position, motion};
 		this.entityManager.createEntity(components);		
 	}
