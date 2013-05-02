@@ -1,6 +1,5 @@
 package de.ka.javacity.game.impl;
 
-import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.component.AbstractComponent;
 import de.ka.javacity.component.impl.Display2D;
 import de.ka.javacity.component.impl.Display3D;
@@ -32,7 +31,7 @@ public class BaseGame extends AbstractGame {
 		this.fullscreen = false;
 	}
 
-	public void startUp(GameCamera gameCam) {
+	public void startUp() {
 		// Initialize FamilyManager
 		this.familyManager = new FamilyManager();
 		
@@ -42,7 +41,7 @@ public class BaseGame extends AbstractGame {
 		// Initialize SystemManager incl. Systems
 		this.systemManager = new SystemManager();
 	
-		RenderSystem3D renderSystem = new RenderSystem3D(familyManager, gameCam);
+		RenderSystem renderSystem = new RenderSystem(familyManager);
 		MovementSystem movementSystem = new MovementSystem(familyManager);
 		
 		this.systemManager.addSystem(renderSystem);
@@ -52,19 +51,19 @@ public class BaseGame extends AbstractGame {
 	
 	}
 	
-	public void createTestBlob(double x, double y) {
+	public void createTestBlob(float x, float y) {
 		// Test object: blob
-		Display3D display = new Display3D();
-		display.setView(new Blob3D());
+		Display2D display = new Display2D();
+		display.setView(new Blob());
 		
 		Position2D position = new Position2D();
 		position.setX(x);
 		position.setY(y);
 		
 		Motion2D motion = new Motion2D();
-		motion.setVx(2.5);//Math.random());
-		motion.setVy(2.5);//Math.random());
-		motion.setVelocity(4.0);
+		motion.setVx((float)Math.random());
+		motion.setVy((float)Math.random());
+		motion.setVelocity(4.0f);
 		
 		AbstractComponent components[] = {display, position, motion};
 		this.entityManager.createEntity(components);		

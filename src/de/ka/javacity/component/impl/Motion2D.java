@@ -5,49 +5,49 @@ import de.ka.javacity.component.ComponentType;
 
 public class Motion2D extends AbstractComponent {
 	// Basic Velocity
-	private double velocity;
-	private double vx, vy;
+	private float velocity;
+	private float vx, vy;
 
 	// friction
-	private double damping;
+	private float damping;
 	
 	public Motion2D() {
 		this.type = ComponentType.MOTION2D;
-		this.velocity = 0.0;
-		this.vx = 0.0;
-		this.vy = 0.0;
-		this.damping = 0.0;
+		this.velocity = 0.0f;
+		this.vx = 0.0f;
+		this.vy = 0.0f;
+		this.damping = 0.0f;
 	}
 	
-	public double getVelocity() {
+	public float getVelocity() {
 		return velocity;
 	}
 
-	public void setVelocity(double velocity) {
+	public void setVelocity(float velocity) {
 		this.velocity = velocity;
 	}
 
-	public double getVx() {
+	public float getVx() {
 		return this.vx;
 	}
 
-	public double getVy() {
+	public float getVy() {
 		return this.vy;
 	}
 	
-	public void setVx(double vx) {
+	public void setVx(float vx) {
 		this.vx = vx;
 	}
 
-	public void setVy(double vy) {
+	public void setVy(float vy) {
 		this.vy = vy;
 	}
 
-	public double getDamping() {
+	public float getDamping() {
 		return damping;
 	}
 
-	public void setDamping(double damping) {
+	public void setDamping(float damping) {
 		this.damping = damping;
 	}
 

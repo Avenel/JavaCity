@@ -1,30 +1,29 @@
 package de.ka.javacity.game;
 
-import de.ka.javacity.cam.GameCamera;
 
 public abstract class AbstractGame {
 
 	protected String title;
-	protected double window_width;
-	protected double window_height;
+	protected int window_width;
+	protected int window_height;
 	protected boolean fullscreen;
 
-	public void startUp(GameCamera gameCam) {
+	public void startUp() {
 	}
 
-	public double getWindow_width() {
+	public int getWindow_width() {
 		return window_width;
 	}
 
-	public void setWindow_width(double window_width) {
+	public void setWindow_width(int window_width) {
 		this.window_width = window_width;
 	}
 
-	public double getWindow_height() {
+	public int getWindow_height() {
 		return window_height;
 	}
 
-	public void setWindow_height(double window_height) {
+	public void setWindow_height(int window_height) {
 		this.window_height = window_height;
 	}
 
@@ -48,6 +47,6 @@ public abstract class AbstractGame {
 		
 	}
 	
-	public void createTestBlob(double vx, double vy) {}
+	public void createTestBlob(float x, float y) {}
 
 }

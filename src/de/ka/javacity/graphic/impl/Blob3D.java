@@ -7,10 +7,11 @@ public class Blob3D implements IView3D {
 
 	public Blob3D() {
 	}
-	
-	@Override
-	public void draw(double x, double y, double z, double rx, double ry,
-			double rz) {		
-	}
 
+	@Override
+	public void draw(float x, float y, float z, double rx, double ry, double rz) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

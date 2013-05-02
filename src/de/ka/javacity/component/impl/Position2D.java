@@ -5,27 +5,27 @@ import de.ka.javacity.component.ComponentType;
 
 public class Position2D extends AbstractComponent {
 
-	private double x,y;
+	private float x,y;
 	
 	public Position2D() {
 		this.type = ComponentType.POSITION2D;
-		this.x = 0.0;
-		this.y = 0.0;
+		this.x = 0.0f;
+		this.y = 0.0f;
 	}
 
-	public double getX() {
+	public float getX() {
 		return x;
 	}
 
-	public void setX(double x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 
-	public double getY() {
+	public float getY() {
 		return y;
 	}
 
-	public void setY(double y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	
