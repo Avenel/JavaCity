@@ -4,7 +4,7 @@ JavaCity
 Ideen:   
   -> (Aufbau-)Simulation   
   -> Auf System-Entity-Component Konzept basierend    
-  -> Technik: JavaFX, Canvas   
+  -> Technik: LWGJL (Lightweight Java Game Library)   
   -> ECSB (=Engine Component System Based) Engine 
 
 Grafik:      
@@ -13,6 +13,7 @@ Grafik:
    -> http://lwjgl.org/index.php (?)   
 
 Literatur:   
+http://www.lwjgl.org/wiki/index.php?title=Main_Page           
 http://www.tomseysdavies.com/2011/01/23/entity-systems/    
 http://carlfx.wordpress.com/2012/04/09/javafx-2-gametutorial-part-2/    
 http://fxexperience.com/2013/02/javafx-3d-early-access-available/     
