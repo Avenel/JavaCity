@@ -33,17 +33,17 @@ private IFamilyManager familyManager;
 			float px = position.getX();
 			float py = position.getY();
 			
-			if (px < 0 || px > 800) {
+			if (px < -130 || px > 130) {
 				 motion.setVx(-motion.getVx());
 			}
 				 
-			if (py < 0 || py > 600) {
+			if (py < -100 || py > 100) {
 				 motion.setVy(-motion.getVy());
 			}
 			
 			// set new positions
 			position.setX(px + motion.getVx());
-			position.setY(py + motion.getVy());
+			position.setY(py - motion.getVy());
 			
 			motion.setRx(motion.getRx() + 1.0f);
 			motion.setRy(motion.getRy() + 1.0f);

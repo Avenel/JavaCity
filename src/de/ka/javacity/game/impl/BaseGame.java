@@ -61,7 +61,7 @@ public class BaseGame extends AbstractGame {
 		Display3D display = new Display3D();
 		display.setView(new Blob3D());
 		
-		Position3D position = new Position3D(x, y, 0);
+		Position3D position = new Position3D(x, y, -100);
 		
 		Motion3D motion = new Motion3D();
 		motion.setVx((float)Math.random() * 5.0f);

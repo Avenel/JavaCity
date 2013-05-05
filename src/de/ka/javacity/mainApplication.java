@@ -5,6 +5,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 import de.ka.javacity.game.AbstractGame;
 import de.ka.javacity.game.impl.BaseGame;
@@ -17,15 +18,13 @@ public class MainApplication {
 	private long lastFPS;
 	private int fps;
 	private int actualFps;
-	private int maxBlobs = 2500;
+	private int maxBlobs = 10;
 
 	public MainApplication() {
-		
-		// Init Game
-		AbstractGame game = new BaseGame();
-		game.startUp();
-		
 		int blobCount = 0;
+
+		// Create game
+		AbstractGame game = new BaseGame();
 		
 		// Setup Display
 		try {
@@ -39,16 +38,24 @@ public class MainApplication {
 			System.exit(1);
 		}
 		
-		// init OpenGl (First, just 2D stuff)
+		// init OpenGl
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 800, 600, 0, 20, -20);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		gluPerspective(90.0f, 800f/600f, 0.001f, 100);
+		GL11.glViewport(0, 0, 800, 600);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);		
 		
+		// Culling
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
 		
 		// start fps time
 		this.lastFPS = this.getTime();
 		
+		// Init Game
+		
+		game.startUp();
+			
 		// ApplicationLoop
 		while(!Display.isCloseRequested()) {
 			// Clear the screen and depth buffer
@@ -59,11 +66,11 @@ public class MainApplication {
 			
 			// UpdateWorld
 			// More Blobs!
-			for (int i=0; i<10 && blobCount < maxBlobs ; i++) {
-				game.createTestBlob(0, 0);
+			for (int i=0; i < maxBlobs ; i++) {
+				game.createTestBlob(-130, 100);
 				blobCount++;
 			}
-						
+									
 			// Update everything, includes rendering objects
 			game.update();
 			
