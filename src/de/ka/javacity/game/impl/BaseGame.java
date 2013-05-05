@@ -64,8 +64,9 @@ public class BaseGame extends AbstractGame {
 		Position3D position = new Position3D(x, y, -100);
 		
 		Motion3D motion = new Motion3D();
-		motion.setVx((float)Math.random() * 5.0f);
-		motion.setVy((float)Math.random() * 5.0f);
+		motion.setVx((float)Math.random() * 1.1f);
+		motion.setVy((float)Math.random() * 1.1f);
+		motion.setVz((float)Math.random() * 1.1f);
 				
 		AbstractComponent components[] = {display, position, motion};
 		this.entityManager.createEntity(components);		

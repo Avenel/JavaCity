@@ -18,7 +18,7 @@ public class MainApplication {
 	private long lastFPS;
 	private int fps;
 	private int actualFps;
-	private int maxBlobs = 10;
+	private int maxBlobs = 10000;
 
 	public MainApplication() {
 		int blobCount = 0;
@@ -63,11 +63,10 @@ public class MainApplication {
 			
 			// Inputs
 			
-			
 			// UpdateWorld
 			// More Blobs!
-			for (int i=0; i < maxBlobs ; i++) {
-				game.createTestBlob(-130, 100);
+			for (int i=0; i<1 && blobCount < maxBlobs ; i++) {
+				game.createTestBlob(0, 0);
 				blobCount++;
 			}
 									

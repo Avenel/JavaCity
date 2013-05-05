@@ -32,6 +32,7 @@ private IFamilyManager familyManager;
 			// TODO hardcoded
 			float px = position.getX();
 			float py = position.getY();
+			float pz = position.getZ();
 			
 			if (px < -130 || px > 130) {
 				 motion.setVx(-motion.getVx());
@@ -41,9 +42,14 @@ private IFamilyManager familyManager;
 				 motion.setVy(-motion.getVy());
 			}
 			
+			if (pz < -100 || pz > - 20) {
+				 motion.setVz(-motion.getVz());
+			}
+			
 			// set new positions
 			position.setX(px + motion.getVx());
 			position.setY(py - motion.getVy());
+			position.setZ(pz - motion.getVz());
 			
 			motion.setRx(motion.getRx() + 1.0f);
 			motion.setRy(motion.getRy() + 1.0f);

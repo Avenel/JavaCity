@@ -6,7 +6,7 @@ import de.ka.javacity.graphic.IView3D;
 
 public class Blob3D implements IView3D {
 
-	private float size = 1;
+	private float size = 1f;
 
 	public Blob3D() {
 	}
