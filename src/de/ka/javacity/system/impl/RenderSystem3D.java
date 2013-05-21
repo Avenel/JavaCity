@@ -2,8 +2,6 @@ package de.ka.javacity.system.impl;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-
 import de.ka.javacity.node.AbstractNode;
 import de.ka.javacity.node.impl.RenderNode3D;
 import de.ka.javacity.system.FamilyName;

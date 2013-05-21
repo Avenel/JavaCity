@@ -1,25 +1,17 @@
 package de.ka.javacity.game.impl;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import de.ka.javacity.component.AbstractComponent;
-import de.ka.javacity.component.impl.Display2D;
 import de.ka.javacity.component.impl.Display3D;
-import de.ka.javacity.component.impl.Motion2D;
 import de.ka.javacity.component.impl.Motion3D;
-import de.ka.javacity.component.impl.Position2D;
 import de.ka.javacity.component.impl.Position3D;
 import de.ka.javacity.entity.IEntityManager;
 import de.ka.javacity.entity.impl.EntityManager;
 import de.ka.javacity.game.AbstractGame;
-import de.ka.javacity.graphic.impl.Blob;
 import de.ka.javacity.graphic.impl.Blob3D;
 import de.ka.javacity.system.IFamilyManager;
 import de.ka.javacity.system.ISystemManager;
 import de.ka.javacity.system.impl.FamilyManager;
 import de.ka.javacity.system.impl.Movement3DSystem;
-import de.ka.javacity.system.impl.MovementSystem;
-import de.ka.javacity.system.impl.RenderSystem;
 import de.ka.javacity.system.impl.RenderSystem3D;
 import de.ka.javacity.system.impl.SystemManager;
 
