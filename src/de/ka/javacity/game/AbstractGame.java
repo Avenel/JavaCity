@@ -47,6 +47,6 @@ public abstract class AbstractGame {
 		
 	}
 	
-	public void createTestBlob(float x, float y) {}
+	public void createTestBlob(float x, float y, float z) {}
 
 }

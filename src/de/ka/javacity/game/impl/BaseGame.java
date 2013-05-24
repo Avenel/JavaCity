@@ -42,18 +42,18 @@ public class BaseGame extends AbstractGame {
 		Movement3DSystem movementSystem = new Movement3DSystem(familyManager);
 		
 		this.systemManager.addSystem(renderSystem);
-		this.systemManager.addSystem(movementSystem);
+		//this.systemManager.addSystem(movementSystem);
 		
 		// TODO Initialize Gamestatus/Gamelogic
 	
 	}
 	
-	public void createTestBlob(float x, float y) {
+	public void createTestBlob(float x, float y, float z) {
 		// Test object: blob
 		Display3D display = new Display3D();
 		display.setView(new Blob3D());
 		
-		Position3D position = new Position3D(x, y, -100);
+		Position3D position = new Position3D(x, y, -100 + z);
 		
 		Motion3D motion = new Motion3D();
 		motion.setVx((float)Math.random() * 1.1f);
