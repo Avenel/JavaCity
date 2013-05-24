@@ -9,5 +9,6 @@ public enum ComponentType {
 	POSITION2D,
 	POSITION3D,
 	MOTION2D,
-	MOTION3D;
+	MOTION3D,
+	CHUNK;
 }

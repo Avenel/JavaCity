@@ -7,6 +7,7 @@ import java.util.Map;
 
 import de.ka.javacity.entity.AbstractEntity;
 import de.ka.javacity.node.AbstractNode;
+import de.ka.javacity.node.impl.ChunkNode;
 import de.ka.javacity.node.impl.Movement3DNode;
 import de.ka.javacity.node.impl.MovementNode;
 import de.ka.javacity.node.impl.RenderNode;
@@ -28,6 +29,7 @@ public class FamilyManager implements IFamilyManager {
 		this.availableFamilies.put(FamilyName.RENDER3D, new RenderNode3D());
 		this.availableFamilies.put(FamilyName.MOVEMENT, new MovementNode());
 		this.availableFamilies.put(FamilyName.MOVEMENT3D, new Movement3DNode());
+		this.availableFamilies.put(FamilyName.CHUNK, new ChunkNode());
 		
 		// initialize family list, add empty lists for each available family
 		this.families = new HashMap<FamilyName, List<AbstractNode>>();
@@ -35,6 +37,7 @@ public class FamilyManager implements IFamilyManager {
 		this.families.put(FamilyName.RENDER3D, new ArrayList<AbstractNode>());
 		this.families.put(FamilyName.MOVEMENT, new ArrayList<AbstractNode>());
 		this.families.put(FamilyName.MOVEMENT3D, new ArrayList<AbstractNode>());
+		this.families.put(FamilyName.CHUNK, new ArrayList<AbstractNode>());
 	}
 	
 	@Override
