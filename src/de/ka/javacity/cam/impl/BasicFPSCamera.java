@@ -75,5 +75,11 @@ public class BasicFPSCamera implements GameCamera {
         //translate to the position vector's location
         GL11.glTranslatef(position.x, position.y, position.z);
     }
+	public Vector3f getPosition() {
+		return position;
+	}
+	public void setPosition(Vector3f position) {
+		this.position = position;
+	}
     
 }

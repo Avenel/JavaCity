@@ -14,8 +14,11 @@ import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.cam.impl.BasicFPSCamera;
+import de.ka.javacity.component.impl.Chunk.BoxType;
 import de.ka.javacity.game.AbstractGame;
 import de.ka.javacity.game.impl.BaseGame;
+import de.ka.javacity.helper.HeightMapGenerator;
+import de.ka.javacity.helper.WorldGenerator;
 
 /**
  * Main for JavaCity
@@ -25,7 +28,6 @@ public class MainApplication {
 	private long lastFPS;
 	private int fps;
 	private int actualFps;
-	private int maxBlobs = 20000;
 	private float mouseSensitivity = 0.15f;
 	private float movementSpeed  = 10.0f;
 	
@@ -51,7 +53,7 @@ public class MainApplication {
 		// init OpenGl
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(90.0f, 800f/600f, 0.001f, 100);
+		gluPerspective(90.0f, 800f/600f, 0.001f, 2000);
 		glViewport(0, 0, 800, 600);
 		glMatrixMode(GL_MODELVIEW);		
 		
@@ -61,6 +63,9 @@ public class MainApplication {
 		
 		glEnable(GL_LIGHT0);
 		glLight(GL_LIGHT0, GL_DIFFUSE, asFloatBuffer(new float[]{1.3f, 1.3f, 1.3f, 1f}));
+		
+		glEnable(GL_LIGHT1);
+		glLight(GL_LIGHT1, GL_DIFFUSE, asFloatBuffer(new float[]{1.3f, 1.3f, 1.3f, 1f}));
 		
 		// Culling
 		glEnable(GL_CULL_FACE);
@@ -81,11 +86,14 @@ public class MainApplication {
 		game.startUp();
 		
 		// Create FPS Camera 
-		GameCamera camera = new BasicFPSCamera(0, -5, 0);
+		GameCamera camera = new BasicFPSCamera(0, -40, 0);
 		
 		Mouse.setGrabbed(true);
 		
+		// Generate World
 		game.createTestBlob(0, 0, 0 );
+
+
 		
 		// ApplicationLoop
 		while(!Display.isCloseRequested()) {
@@ -115,15 +123,10 @@ public class MainApplication {
 			}
 					
 			// UpdateWorld
-			// More Blobs!
-			// bottom
-//			for (int i=0; i < 100 && blobCount < maxBlobs ; i++) {
-//				game.createTestBlob((blobCount % 100)*2, (float)(Math.random()*10.0f), (blobCount / 100)*2 );
-//				blobCount++;
-//			}
 			
 			// Translate light
-			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{0f, -50.0f, 150f, 1f}));
+			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 80f, -20.0f, 80f, 1f}));
+			glLight(GL_LIGHT1, GL_POSITION, asFloatBuffer(new float[]{ 150f, -20.0f, 150f, 1f}));
 			
 			// camera
 			glLoadIdentity();

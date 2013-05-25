@@ -5,11 +5,15 @@ import de.ka.javacity.component.impl.Chunk;
 import de.ka.javacity.component.impl.Display3D;
 import de.ka.javacity.component.impl.Motion3D;
 import de.ka.javacity.component.impl.Position3D;
+import de.ka.javacity.component.impl.Chunk.BoxType;
 import de.ka.javacity.entity.IEntityManager;
 import de.ka.javacity.entity.impl.EntityManager;
 import de.ka.javacity.game.AbstractGame;
 import de.ka.javacity.graphic.impl.Blob3D;
 import de.ka.javacity.graphic.impl.Chunk3D;
+import de.ka.javacity.helper.ChunkGenerator;
+import de.ka.javacity.helper.HeightMapGenerator;
+import de.ka.javacity.helper.WorldGenerator;
 import de.ka.javacity.system.IFamilyManager;
 import de.ka.javacity.system.ISystemManager;
 import de.ka.javacity.system.impl.FamilyManager;
@@ -51,21 +55,23 @@ public class BaseGame extends AbstractGame {
 	}
 	
 	public void createTestBlob(float x, float y, float z) {
-		// Test object: blob
-		Chunk chunk = new Chunk();
+		int worldsize = 128;
+		int worldHeight = 16; 
+		int chunksize = 8;
 		
-		Display3D display = new Display3D();
-		display.setView(new Chunk3D(chunk.getBoxes()));
+		int soillevel = (int)((float)worldHeight * 0.33f);
+		int waterlevel = (int)((float)worldHeight * 0.5f);
+		int grasslevel = (int)((float)worldHeight * 0.65f);
+		int rocklevel = (int)((float)worldHeight * 0.9f);
 		
-		Position3D position = new Position3D(x, y, -100 + z);
+		HeightMapGenerator heightMapGenerator = new HeightMapGenerator(worldsize, worldHeight);
+		int[][] map = heightMapGenerator.generate(5);
 		
-		Motion3D motion = new Motion3D();
-		motion.setVx((float)Math.random() * 1.1f);
-		motion.setVy((float)Math.random() * 1.1f);
-		motion.setVz((float)Math.random() * 1.1f);
+		WorldGenerator worldGenerator = new WorldGenerator(map, worldsize, worldHeight, soillevel, waterlevel, grasslevel, rocklevel);
+		BoxType [][][] world = worldGenerator.generate();	
 		
-		AbstractComponent components[] = {display, position, motion, chunk};
-		this.entityManager.createEntity(components);		
+		ChunkGenerator chunkGenerator = new ChunkGenerator(chunksize, this.entityManager, world, 1f);
+		chunkGenerator.generateWorldChunks();
 	}
 	
 	public void update() {

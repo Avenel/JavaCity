@@ -59,6 +59,10 @@ public class Chunk3D implements IView3D {
 			this.bufferId = createVBOID();
 			this.colorId = createVBOID();
 			
+			this.offsetX = x;
+			this.offsetY = y;
+			this.offsetZ = z;
+			
 			// Create Boxes (BufferData)	
 			this.enabledBoxes = this.memorizeNotEnclosedBoxes(boxes);
 			this.amountOfVertices = this.countEnabledBoxes() * 24;
@@ -69,9 +73,7 @@ public class Chunk3D implements IView3D {
 			this.pushVertexBufferData(this.colorId, this.createColorBufferData(this.boxes));
 		} else {
 			// draw
-			try {
-				glClear(GL_COLOR_BUFFER_BIT);
-				
+			try {				
 				glBindBuffer(GL_ARRAY_BUFFER, this.bufferId);
 				glVertexPointer(this.verticeSize, GL_FLOAT, 0, 0L);
 				
@@ -122,9 +124,9 @@ public class Chunk3D implements IView3D {
 
 		for (Vector3f vector : this.enabledBoxes) {
 			vertexData.put(createSingleBoxData(
-							vector.getX() * this.blockSize*2, 
-							vector.getY() * this.blockSize*2, 
-							vector.getZ() * this.blockSize*2));
+							(vector.getX() + this.offsetX) * this.blockSize*2, 
+							(vector.getY() + this.offsetY) * this.blockSize*2, 
+							(vector.getZ() + this.offsetZ) * this.blockSize*2));
 		}
 		
 		vertexData.flip();
@@ -224,11 +226,7 @@ public class Chunk3D implements IView3D {
 	
 	private ArrayList<Vector3f> memorizeNotEnclosedBoxes(BoxType[][][] boxes) {
 		ArrayList<Vector3f> listOfBoxes = new ArrayList<Vector3f>();
-		
-		int outside = 0;
-		int inside = 0;
-		int reduced = 0;
-		
+			
 		// go through cube (chunk)
 		for (int x=0; x < boxes.length; x++) {
 			for (int y=0; y < boxes.length; y++) {
@@ -239,26 +237,20 @@ public class Chunk3D implements IView3D {
 						if (x == 0 || x == boxes.length-1 || y == 0 || y == boxes[0].length-1 || 
 							z == 0 || z == boxes[0][0].length-1) {
 							listOfBoxes.add(new Vector3f(x, y, z));
-							outside++;
 						} else {					
 							// are there any neighbours?
 							if (	boxes[x-1][y][z] != BoxType.EMPTY && boxes[x+1][y][z] != BoxType.EMPTY &&
 									boxes[x][y-1][z] != BoxType.EMPTY && boxes[x][y+1][z] != BoxType.EMPTY &&
 									boxes[x][y][z-1] != BoxType.EMPTY && boxes[x][y][z+1] != BoxType.EMPTY ) {
-								reduced++;
 							} else {
 								listOfBoxes.add(new Vector3f(x, y, z));
-								inside++;
 							}
 						}
 					}
 				}
 			}
 		}
-
-		System.out.println("Reduced: " + reduced);
-		System.out.println("Inner: " + inside);
-		System.out.println("Outside: " + outside);
+	
 		return listOfBoxes;
 	}
 	

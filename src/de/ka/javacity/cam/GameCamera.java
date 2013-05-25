@@ -1,4 +1,7 @@
 package de.ka.javacity.cam;
+
+import org.lwjgl.util.vector.Vector3f;
+
 /**
     Represents a camera movement like in an ego perspective shooter.
 **/
@@ -11,4 +14,7 @@ public interface GameCamera {
 	public void pitch(float distance);
 	
 	public void lookThrough();
+	
+	public Vector3f getPosition();
+	public void setPosition(Vector3f position);
 }
