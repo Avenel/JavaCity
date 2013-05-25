@@ -86,7 +86,7 @@ public class MainApplication {
 		game.startUp();
 		
 		// Create FPS Camera 
-		GameCamera camera = new BasicFPSCamera(0, -40, 0);
+		GameCamera camera = new BasicFPSCamera(0, -25, 0);
 		
 		Mouse.setGrabbed(true);
 		
