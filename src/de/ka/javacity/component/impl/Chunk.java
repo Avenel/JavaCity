@@ -31,6 +31,35 @@ public class Chunk extends AbstractComponent {
 		// Default size = 32
 		this.size = 32;
 		this.boxes = new BoxType [this.size][this.size][this.size];
+		
+		// initialize empty chunk
+		for (int x=0; x < boxes.length; x++) {
+			for (int y=0; y < boxes.length; y++) {
+				for (int z=0; z < boxes.length; z++) {
+					if (y < 10) {
+						this.boxes[x][y][z] = BoxType.SOIL;
+						continue;
+					} 
+					
+					if (y < 15) {
+						this.boxes[x][y][z] = BoxType.WATER;
+						continue;
+					}
+					
+					if (y < 25) {
+						this.boxes[x][y][z] = BoxType.GRASS;
+						continue;
+					}
+						
+					if (y >= 25) {
+						this.boxes[x][y][z] = BoxType.ROCK;
+						continue;
+					}
+					
+				}
+			}
+		}
+		
 		this.blockSize = 1f;
 	}
 	

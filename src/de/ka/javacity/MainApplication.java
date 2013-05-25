@@ -70,7 +70,9 @@ public class MainApplication {
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT, GL_DIFFUSE);
 		
-		//GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glEnable(GL_DEPTH_TEST); 
+
 		
 		// start fps time
 		this.lastFPS = this.getTime();
@@ -82,6 +84,8 @@ public class MainApplication {
 		GameCamera camera = new BasicFPSCamera(0, -5, 0);
 		
 		Mouse.setGrabbed(true);
+		
+		game.createTestBlob(0, 0, 0 );
 		
 		// ApplicationLoop
 		while(!Display.isCloseRequested()) {
@@ -113,10 +117,10 @@ public class MainApplication {
 			// UpdateWorld
 			// More Blobs!
 			// bottom
-			for (int i=0; i < 100 && blobCount < maxBlobs ; i++) {
-				game.createTestBlob((blobCount % 100)*2, (float)(Math.random()*10.0f), (blobCount / 100)*2 );
-				blobCount++;
-			}
+//			for (int i=0; i < 100 && blobCount < maxBlobs ; i++) {
+//				game.createTestBlob((blobCount % 100)*2, (float)(Math.random()*10.0f), (blobCount / 100)*2 );
+//				blobCount++;
+//			}
 			
 			// Translate light
 			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{0f, -50.0f, 150f, 1f}));

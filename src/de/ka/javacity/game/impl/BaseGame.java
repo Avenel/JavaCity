@@ -1,6 +1,7 @@
 package de.ka.javacity.game.impl;
 
 import de.ka.javacity.component.AbstractComponent;
+import de.ka.javacity.component.impl.Chunk;
 import de.ka.javacity.component.impl.Display3D;
 import de.ka.javacity.component.impl.Motion3D;
 import de.ka.javacity.component.impl.Position3D;
@@ -8,6 +9,7 @@ import de.ka.javacity.entity.IEntityManager;
 import de.ka.javacity.entity.impl.EntityManager;
 import de.ka.javacity.game.AbstractGame;
 import de.ka.javacity.graphic.impl.Blob3D;
+import de.ka.javacity.graphic.impl.Chunk3D;
 import de.ka.javacity.system.IFamilyManager;
 import de.ka.javacity.system.ISystemManager;
 import de.ka.javacity.system.impl.FamilyManager;
@@ -50,8 +52,10 @@ public class BaseGame extends AbstractGame {
 	
 	public void createTestBlob(float x, float y, float z) {
 		// Test object: blob
+		Chunk chunk = new Chunk();
+		
 		Display3D display = new Display3D();
-		display.setView(new Blob3D());
+		display.setView(new Chunk3D(chunk.getBoxes()));
 		
 		Position3D position = new Position3D(x, y, -100 + z);
 		
@@ -59,8 +63,8 @@ public class BaseGame extends AbstractGame {
 		motion.setVx((float)Math.random() * 1.1f);
 		motion.setVy((float)Math.random() * 1.1f);
 		motion.setVz((float)Math.random() * 1.1f);
-				
-		AbstractComponent components[] = {display, position, motion};
+		
+		AbstractComponent components[] = {display, position, motion, chunk};
 		this.entityManager.createEntity(components);		
 	}
 	
