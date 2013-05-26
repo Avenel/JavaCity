@@ -32,7 +32,7 @@ public class Chunk3D implements IView3D {
 	BoxType boxes [][][];
 	ArrayList<Vector3f> enabledBoxes;
 	
-	public Chunk3D(BoxType boxes[][][]) {
+	public Chunk3D(BoxType boxes[][][], float blockSize) {
 		this.bufferId = 0;
 		this.colorId = 0;
 		
@@ -45,7 +45,7 @@ public class Chunk3D implements IView3D {
 		this.colorSize = 3;
 		
 		// default blockSize
-		this.blockSize = 1f;
+		this.blockSize = blockSize;
 		
 		// default offset = 0 
 		this.offsetX = 0f;
@@ -195,7 +195,7 @@ public class Chunk3D implements IView3D {
 				-this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
 				-this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ
 		};
-		
+
 		return boxData;
 	}
 	

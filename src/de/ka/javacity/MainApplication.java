@@ -29,7 +29,7 @@ public class MainApplication {
 	private int fps;
 	private int actualFps;
 	private float mouseSensitivity = 0.15f;
-	private float movementSpeed  = 10.0f;
+	private float movementSpeed  = 50.0f;
 	
 
 	public MainApplication() {
@@ -53,12 +53,12 @@ public class MainApplication {
 		// init OpenGl
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(90.0f, 800f/600f, 0.001f, 2000);
+		gluPerspective(90.0f, 800f/600f, 0.001f, 5000);
 		glViewport(0, 0, 800, 600);
 		glMatrixMode(GL_MODELVIEW);		
 		
 		// init simple ambientlight
-		glEnable(GL_LIGHTING);
+//		glEnable(GL_LIGHTING);
 		glLightModel(GL_AMBIENT, asFloatBuffer(new float[]{0.05f, 0.05f, 0.05f, 1f}));
 		
 		glEnable(GL_LIGHT0);
@@ -81,20 +81,21 @@ public class MainApplication {
 		
 		// start fps time
 		this.lastFPS = this.getTime();
-		
-		// Init Game
-		game.startUp();
-		
+
 		// Create FPS Camera 
-		GameCamera camera = new BasicFPSCamera(0, -25, 0);
+		GameCamera camera = new BasicFPSCamera(0, -30, 0);		
+		camera.setRenderDistance(5);
 		
 		Mouse.setGrabbed(true);
+		game.setCamera(camera);
+
+		// Init Game
+		game.startUp();
 		
 		// Generate World
 		game.createTestBlob(0, 0, 0 );
 
 
-		
 		// ApplicationLoop
 		while(!Display.isCloseRequested()) {
 			// Clear the screen and depth buffer
@@ -120,6 +121,12 @@ public class MainApplication {
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				camera.strafeRight(movementSpeed * 0.05f);
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+				camera.down(movementSpeed * 0.05f);
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+				camera.up(movementSpeed * 0.05f);
 			}
 					
 			// UpdateWorld

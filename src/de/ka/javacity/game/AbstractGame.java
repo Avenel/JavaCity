@@ -1,5 +1,7 @@
 package de.ka.javacity.game;
 
+import de.ka.javacity.cam.GameCamera;
+
 
 public abstract class AbstractGame {
 
@@ -48,5 +50,11 @@ public abstract class AbstractGame {
 	}
 	
 	public void createTestBlob(float x, float y, float z) {}
+	
+	public GameCamera getCamera(){
+		return null;
+	}
+	
+	public void setCamera(GameCamera camera){}
 
 }

@@ -41,31 +41,35 @@ public class WorldGenerator {
 		
 		for (int x=0; x<this.size; x++) {
 			for (int z=0; z<this.size; z++) {
-				for (int y=0; y < this.map[x][z]; y++) {
+				for (int y=this.map[x][z]-1; y <= this.map[x][z]; y++) {
+					int current_height = y;
+					if (current_height < 0) current_height = 0;
+					if (current_height >= this.height) current_height = height - 1;
+					
 					// Soillevel
 					if (y < this.soillevel) {
-						world[x][y][z] = BoxType.SOIL;
+						world[x][current_height][z] = BoxType.SOIL;
 						soil++;
 						continue;
 					}
 
 					// Waterlevel
 					if (y < this.waterlevel) {
-						world[x][y][z] = BoxType.WATER;
+						world[x][current_height][z] = BoxType.WATER;
 						water++;
 						continue;
 					}
 					
 					// Grasslevel
 					if (y < this.grasslevel) {
-						world[x][y][z] = BoxType.GRASS;
+						world[x][current_height][z] = BoxType.GRASS;
 						grass++;
 						continue;
 					}
 					
 					// Rocklevel
-					if (y < this.rocklevel) {
-						world[x][y][z] = BoxType.ROCK;
+					if (y >= this.grasslevel) {
+						world[x][current_height][z] = BoxType.ROCK;
 						rock++;
 						continue;
 					}

@@ -51,7 +51,7 @@ public class ChunkGenerator {
 		Chunk chunk = new Chunk(size, boxes, blockSize);
 		
 		Display3D display = new Display3D();
-		display.setView(new Chunk3D(boxes));
+		display.setView(new Chunk3D(boxes, blockSize));
 		
 		Position3D position = new Position3D(x, y, z);
 		

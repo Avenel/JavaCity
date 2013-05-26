@@ -1,5 +1,6 @@
 package de.ka.javacity.game.impl;
 
+import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.component.AbstractComponent;
 import de.ka.javacity.component.impl.Chunk;
 import de.ka.javacity.component.impl.Display3D;
@@ -27,6 +28,8 @@ public class BaseGame extends AbstractGame {
 	private IEntityManager entityManager;
 	private ISystemManager systemManager;
 	
+	private GameCamera camera;
+	
 	public BaseGame() {
 		this.title = "JavaCity";
 		this.window_width = 800;
@@ -44,7 +47,7 @@ public class BaseGame extends AbstractGame {
 		// Initialize SystemManager incl. Systems
 		this.systemManager = new SystemManager();
 	
-		RenderSystem3D renderSystem = new RenderSystem3D(familyManager);
+		RenderSystem3D renderSystem = new RenderSystem3D(familyManager, this.camera);
 		Movement3DSystem movementSystem = new Movement3DSystem(familyManager);
 		
 		this.systemManager.addSystem(renderSystem);
@@ -55,12 +58,16 @@ public class BaseGame extends AbstractGame {
 	}
 	
 	public void createTestBlob(float x, float y, float z) {
-		int worldsize = 128;
-		int worldHeight = 16; 
-		int chunksize = 8;
+		int worldsize = 1024;
+		int worldHeight = 64; 
+		int chunksize = 32;
+		float blockSize = 1f;
 		
-		int soillevel = (int)((float)worldHeight * 0.33f);
-		int waterlevel = (int)((float)worldHeight * 0.5f);
+		this.camera.setChunkSize(chunksize);
+		this.camera.setBlockSize(blockSize);
+		
+		int waterlevel = (int)((float)worldHeight * 0.33f);
+		int soillevel = (int)((float)worldHeight * 0.5f);
 		int grasslevel = (int)((float)worldHeight * 0.65f);
 		int rocklevel = (int)((float)worldHeight * 0.9f);
 		
@@ -70,12 +77,20 @@ public class BaseGame extends AbstractGame {
 		WorldGenerator worldGenerator = new WorldGenerator(map, worldsize, worldHeight, soillevel, waterlevel, grasslevel, rocklevel);
 		BoxType [][][] world = worldGenerator.generate();	
 		
-		ChunkGenerator chunkGenerator = new ChunkGenerator(chunksize, this.entityManager, world, 1f);
+		ChunkGenerator chunkGenerator = new ChunkGenerator(chunksize, this.entityManager, world, blockSize);
 		chunkGenerator.generateWorldChunks();
 	}
 	
 	public void update() {
 		this.systemManager.updateSystems();
+	}
+
+	public GameCamera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(GameCamera camera) {
+		this.camera = camera;
 	}
 
 }
