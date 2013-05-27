@@ -38,13 +38,35 @@ public class WorldGenerator {
 		int water = 0;
 		int grass = 0;
 		int rock = 0;
+		int reduced = 0;
 		
 		for (int x=0; x<this.size; x++) {
 			for (int z=0; z<this.size; z++) {
-				for (int y=this.map[x][z]-1; y <= this.map[x][z]; y++) {
+				for (int y=0; y <= this.map[x][z]; y++) {
+					
+					// reduce! :D
 					int current_height = y;
+					if (x > 0 && x < this.size - 1 &&
+						z > 0 && z < this.size -1) {
+						if (map[x+1][z] > y &&
+							map[x-1][z] > y	&&
+							map[x][z+1] > y &&
+							map[x][z-1] > y) {
+							reduced++;
+							continue;
+						}
+					}
+					
+					
 					if (current_height < 0) current_height = 0;
 					if (current_height >= this.height) current_height = height - 1;
+					
+					// Waterlevel
+					if (y < this.waterlevel) {
+						world[x][current_height][z] = BoxType.WATER;
+						water++;
+						continue;
+					}
 					
 					// Soillevel
 					if (y < this.soillevel) {
@@ -53,13 +75,6 @@ public class WorldGenerator {
 						continue;
 					}
 
-					// Waterlevel
-					if (y < this.waterlevel) {
-						world[x][current_height][z] = BoxType.WATER;
-						water++;
-						continue;
-					}
-					
 					// Grasslevel
 					if (y < this.grasslevel) {
 						world[x][current_height][z] = BoxType.GRASS;
@@ -81,6 +96,7 @@ public class WorldGenerator {
 		System.out.println("water: "+water);
 		System.out.println("grass: "+grass);
 		System.out.println("rock: "+rock);
+		System.out.println("Reduced: "+reduced);
 		
 		return world;
 	}

@@ -34,7 +34,7 @@ public class BaseGame extends AbstractGame {
 		this.title = "JavaCity";
 		this.window_width = 800;
 		this.window_height = 600;
-		this.fullscreen = false;
+		this.fullscreen = true;
 	}
 
 	public void startUp() {
@@ -60,19 +60,19 @@ public class BaseGame extends AbstractGame {
 	public void createTestBlob(float x, float y, float z) {
 		int worldsize = 1024;
 		int worldHeight = 64; 
-		int chunksize = 32;
-		float blockSize = 1f;
+		int chunksize = 16;
+		float blockSize = 0.5f;
 		
 		this.camera.setChunkSize(chunksize);
 		this.camera.setBlockSize(blockSize);
 		
 		int waterlevel = (int)((float)worldHeight * 0.33f);
 		int soillevel = (int)((float)worldHeight * 0.5f);
-		int grasslevel = (int)((float)worldHeight * 0.65f);
-		int rocklevel = (int)((float)worldHeight * 0.9f);
+		int grasslevel = (int)((float)worldHeight * 0.84f);
+		int rocklevel = (int)((float)worldHeight * 0.85f);
 		
 		HeightMapGenerator heightMapGenerator = new HeightMapGenerator(worldsize, worldHeight);
-		int[][] map = heightMapGenerator.generate(5);
+		int[][] map = heightMapGenerator.generate(3);
 		
 		WorldGenerator worldGenerator = new WorldGenerator(map, worldsize, worldHeight, soillevel, waterlevel, grasslevel, rocklevel);
 		BoxType [][][] world = worldGenerator.generate();	

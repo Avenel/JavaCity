@@ -133,6 +133,14 @@ public class BasicFPSCamera implements GameCamera {
 	public void setBlockSize(float blocksize) {
 		this.blocksize = blocksize;
 	}
+	@Override
+	public float getYaw() {
+		return this.yaw;
+	}
+	@Override
+	public float getPitch() {
+		return this.pitch;
+	}
 	
     
 }

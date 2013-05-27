@@ -53,19 +53,17 @@ public class MainApplication {
 		// init OpenGl
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(90.0f, 800f/600f, 0.001f, 5000);
-		glViewport(0, 0, 800, 600);
+		gluPerspective(90.0f, game.getWindow_width()/game.getWindow_height(), 0.001f, 1000);
+		glViewport(0, 0, game.getWindow_width(), game.getWindow_height());
 		glMatrixMode(GL_MODELVIEW);		
 		
 		// init simple ambientlight
-//		glEnable(GL_LIGHTING);
-		glLightModel(GL_AMBIENT, asFloatBuffer(new float[]{0.05f, 0.05f, 0.05f, 1f}));
+		glEnable(GL_LIGHTING);
+		glLightModel(GL_AMBIENT, asFloatBuffer(new float[]{0.2f, 0.2f, 0.2f, 1f}));
 		
 		glEnable(GL_LIGHT0);
-		glLight(GL_LIGHT0, GL_DIFFUSE, asFloatBuffer(new float[]{1.3f, 1.3f, 1.3f, 1f}));
+		glLight(GL_LIGHT0, GL_DIFFUSE, asFloatBuffer(new float[]{1.2f, 1.2f, 1.2f, 1f}));
 		
-		glEnable(GL_LIGHT1);
-		glLight(GL_LIGHT1, GL_DIFFUSE, asFloatBuffer(new float[]{1.3f, 1.3f, 1.3f, 1f}));
 		
 		// Culling
 		glEnable(GL_CULL_FACE);
@@ -74,6 +72,7 @@ public class MainApplication {
 		// Material Color
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT, GL_DIFFUSE);
+		glMaterial(GL_FRONT, GL_SHININESS, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 1f}));
 		
 //		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glEnable(GL_DEPTH_TEST); 
@@ -84,7 +83,7 @@ public class MainApplication {
 
 		// Create FPS Camera 
 		GameCamera camera = new BasicFPSCamera(0, -30, 0);		
-		camera.setRenderDistance(5);
+		camera.setRenderDistance(20);
 		
 		Mouse.setGrabbed(true);
 		game.setCamera(camera);
@@ -95,6 +94,7 @@ public class MainApplication {
 		// Generate World
 		game.createTestBlob(0, 0, 0 );
 
+		glClearColor(0.1f, 0.6f, 0.8f, 1.0f);
 
 		// ApplicationLoop
 		while(!Display.isCloseRequested()) {
@@ -131,9 +131,8 @@ public class MainApplication {
 					
 			// UpdateWorld
 			
-			// Translate light
-			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 80f, -20.0f, 80f, 1f}));
-			glLight(GL_LIGHT1, GL_POSITION, asFloatBuffer(new float[]{ 150f, -20.0f, 150f, 1f}));
+			// Translate light			
+			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 256f, -80.0f, 256f, 0.5f}));
 			
 			// camera
 			glLoadIdentity();

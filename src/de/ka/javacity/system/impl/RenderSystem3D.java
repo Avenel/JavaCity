@@ -34,9 +34,10 @@ public class RenderSystem3D implements ISystem {
 		float chunkX = (cameraPosition.getX() / ((float)chunkSize * blockSize)) / 2f;
 		float chunkY = (cameraPosition.getY() / ((float)chunkSize * blockSize)) / 2f;
 		float chunkZ = (cameraPosition.getZ() / ((float)chunkSize * blockSize)) / 2f;
-				
-		System.out.println("X, Y, Z: "+ chunkX + ", " + chunkY + ", " + chunkZ + " chunksize: "+ chunkSize);
 		
+		// calculate cone (view, culling stuff)
+		float camDirection = (float) ((float)((camera.getYaw()%360f) * Math.PI / 180f)+Math.PI/2);
+
 		for (AbstractNode node : renderNodes) {
 			RenderNode3D renderNode = (RenderNode3D) node;
 
@@ -48,13 +49,14 @@ public class RenderSystem3D implements ISystem {
 			float cy = y / chunkSize;
 			float cz = z / chunkSize;
 			
-			float dx = Math.abs(chunkX - cx);
-			float dy = Math.abs(chunkY - cy);
-			float dz = Math.abs(chunkZ - cz);
+			float dx = chunkX - cx;
+			float dy = chunkY - cy;
+			float dz = chunkZ - cz;
 			
 			float distance = (float) Math.sqrt((double)(dx*dx + dy*dy + dz*dz));
+			float angle = (float) (Math.atan2(dz, dx) + Math.PI);
 						
-			if (distance < this.renderDistance) {
+			if (distance < this.renderDistance && !(angle > camDirection - Math.PI/2 && angle < camDirection + Math.PI/2)) {
 				renderNode.getDisplay().getView().draw(x, y,z, renderNode.getMotion().getRx(), renderNode.getMotion().getRy(), renderNode.getMotion().getRz());
 			}
 		}
