@@ -32,8 +32,8 @@ public class BaseGame extends AbstractGame {
 	
 	public BaseGame() {
 		this.title = "JavaCity";
-		this.window_width = 800;
-		this.window_height = 600;
+		this.window_width = 1280;
+		this.window_height = 768;
 		this.fullscreen = true;
 	}
 
@@ -72,7 +72,7 @@ public class BaseGame extends AbstractGame {
 		int rocklevel = (int)((float)worldHeight * 0.85f);
 		
 		HeightMapGenerator heightMapGenerator = new HeightMapGenerator(worldsize, worldHeight);
-		int[][] map = heightMapGenerator.generate(3);
+		int[][] map = heightMapGenerator.generate(5);
 		
 		WorldGenerator worldGenerator = new WorldGenerator(map, worldsize, worldHeight, soillevel, waterlevel, grasslevel, rocklevel);
 		BoxType [][][] world = worldGenerator.generate();	

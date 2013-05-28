@@ -128,11 +128,28 @@ public class MainApplication {
 			if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
 				camera.up(movementSpeed * 0.05f);
 			}
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+				camera.yaw(-movementSpeed * mouseSensitivity);
+			}
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+				camera.yaw(movementSpeed * mouseSensitivity);
+			}
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				camera.pitch(-movementSpeed * mouseSensitivity);
+			}
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				camera.pitch(movementSpeed * mouseSensitivity);
+			}
+			
 					
 			// UpdateWorld
 			
 			// Translate light			
-			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 256f, -80.0f, 256f, 0.5f}));
+			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 256f, -80.0f, 256f, 0.1f}));
 			
 			// camera
 			glLoadIdentity();
