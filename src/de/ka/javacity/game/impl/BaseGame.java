@@ -58,10 +58,10 @@ public class BaseGame extends AbstractGame {
 	}
 	
 	public void createTestBlob(float x, float y, float z) {
-		int worldsize = 1024;
+		int worldsize = 256;
 		int worldHeight = 64; 
 		int chunksize = 16;
-		float blockSize = 0.5f;
+		float blockSize = 3.0f;
 		
 		this.camera.setChunkSize(chunksize);
 		this.camera.setBlockSize(blockSize);

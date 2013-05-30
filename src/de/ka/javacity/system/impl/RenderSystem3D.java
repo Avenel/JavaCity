@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 
 import de.ka.javacity.cam.GameCamera;
+import de.ka.javacity.helper.ShaderLoader;
 import de.ka.javacity.node.AbstractNode;
 import de.ka.javacity.node.impl.RenderNode3D;
 import de.ka.javacity.system.FamilyName;
 import de.ka.javacity.system.IFamilyManager;
 import de.ka.javacity.system.ISystem;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.glDeleteProgram;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 public class RenderSystem3D implements ISystem {
 
@@ -17,10 +22,18 @@ public class RenderSystem3D implements ISystem {
 	private GameCamera camera;
 	private float renderDistance;
 	
+	private final String VERTEX_SHADER_LOCATION = "src/de/ka/javacity/shader/pixel_phong_lighting.vs";
+	private final String FRAGMENT_SHADER_LOCATION = "src/de/ka/javacity/shader/pixel_phong_lighting.fs";
+    private int shaderProgram;
+	
 	public RenderSystem3D(IFamilyManager familyManager, GameCamera camera) {
 		this.familyManager = familyManager;
 		this.camera = camera;
 		this.renderDistance = camera.getRenderDistance();
+		
+		System.out.println(shaderProgram);
+		shaderProgram = ShaderLoader.loadShaderPair(VERTEX_SHADER_LOCATION, FRAGMENT_SHADER_LOCATION);
+		System.out.println(shaderProgram);
 	}
 	
 	@Override
@@ -38,6 +51,9 @@ public class RenderSystem3D implements ISystem {
 		// calculate cone (view, culling stuff)
 		float camDirection = (float) ((float)((camera.getYaw()%360f) * Math.PI / 180f)+Math.PI/2);
 
+		// use shader
+		glUseProgram(shaderProgram);
+			
 		for (AbstractNode node : renderNodes) {
 			RenderNode3D renderNode = (RenderNode3D) node;
 
@@ -50,16 +66,19 @@ public class RenderSystem3D implements ISystem {
 			float cz = z / chunkSize;
 			
 			float dx = chunkX - cx;
-			float dy = chunkY - cy;
+			//float dy = chunkY - cy;
 			float dz = chunkZ - cz;
 			
-			float distance = (float) Math.sqrt((double)(dx*dx + dy*dy + dz*dz));
+			float distance = (float) Math.sqrt((double)(dx*dx + dz*dz));
 			float angle = (float) (Math.atan2(dz, dx) + Math.PI);
 						
-			if (distance < this.renderDistance && !(angle > camDirection - Math.PI/2 && angle < camDirection + Math.PI/2)) {
+			if (distance < this.renderDistance) { // && !(angle > camDirection - Math.PI/2 && angle < camDirection + Math.PI/2)) {
 				renderNode.getDisplay().getView().draw(x, y,z, renderNode.getMotion().getRx(), renderNode.getMotion().getRy(), renderNode.getMotion().getRz());
 			}
 		}
+		
+		// deactivate shader
+		 glUseProgram(0);
 	}
 
 }

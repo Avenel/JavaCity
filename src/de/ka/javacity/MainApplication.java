@@ -59,24 +59,28 @@ public class MainApplication {
 		
 		// init simple ambientlight
 		glEnable(GL_LIGHTING);
-		glLightModel(GL_AMBIENT, asFloatBuffer(new float[]{0.2f, 0.2f, 0.2f, 1f}));
+		glLightModel(GL_AMBIENT, asFloatBuffer(new float[]{0.002f, 0.002f, 0.002f, 0f}));
 		
 		glEnable(GL_LIGHT0);
-		glLight(GL_LIGHT0, GL_DIFFUSE, asFloatBuffer(new float[]{1.2f, 1.2f, 1.2f, 1f}));
-		
+		glLightModel(GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.005f, 0.005f, 0.005f, 0f}));
+		//glLight(GL_LIGHT0, GL_DIFFUSE, asFloatBuffer(new float[]{0.2f, 0.2f, 0.2f, 0f}));
 		
 		// Culling
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		
 		// Material Color
+		glShadeModel(GL_SMOOTH);
 		glEnable(GL_COLOR_MATERIAL);
-		glColorMaterial(GL_FRONT, GL_DIFFUSE);
-		glMaterial(GL_FRONT, GL_SHININESS, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 1f}));
 		
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glEnable(GL_DEPTH_TEST); 
+		glMaterialf(GL_FRONT, GL_SHININESS, 128f);
+		
+		glColorMaterial(GL_FRONT, GL_DIFFUSE);
+        glColor3f(0.4f, 0.27f, 0.17f);
 
+        glEnable(GL_DEPTH_TEST); 
+
+//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		
 		// start fps time
 		this.lastFPS = this.getTime();
@@ -149,7 +153,7 @@ public class MainApplication {
 			// UpdateWorld
 			
 			// Translate light			
-			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 256f, -80.0f, 256f, 0.1f}));
+			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 128f*3, -30.0f*3, 128f*3, 0.5f}));
 			
 			// camera
 			glLoadIdentity();
