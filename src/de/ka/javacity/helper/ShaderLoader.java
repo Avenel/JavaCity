@@ -115,4 +115,10 @@ public class ShaderLoader {
         glDeleteShader(fragmentShader);
         return shaderProgram;
     }
+    
+    public static void setFloatUniformVariable(int programmId, String key, float value) {
+    	int loc = glGetUniformLocation(programmId, key);
+		glUniform1f(loc, value);
+    }
+    
 }

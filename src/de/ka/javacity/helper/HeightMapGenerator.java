@@ -20,14 +20,17 @@ public class HeightMapGenerator {
 	public int[][] generate(int amountOfMontains) {
 		int[][] map = new int[this.size][this.size];
 		
+		float frequency=(1.0f/((float)this.size))*4;
+		
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map.length; y++) {
-				map[x][y] = 1;
+				System.out.println(Math.abs(Noise.noise(x*frequency, y*frequency)) * this.maxHeight);
+				map[x][y] = (int)(Math.abs(Noise.noise(x*frequency, y*frequency)) * this.maxHeight);
 			}
 		}
 
 		// generate moutains
-		for (int i=0; i<amountOfMontains; i++) {
+		/*for (int i=0; i<amountOfMontains; i++) {
 			
 			int mountainX = (int)(Math.random() * this.size);
 			int mountainY = (int)(Math.random() * this.size);
@@ -63,7 +66,7 @@ public class HeightMapGenerator {
 					}
 				}
 			}
-		}
+		} */
 	
 		return map;
 	}

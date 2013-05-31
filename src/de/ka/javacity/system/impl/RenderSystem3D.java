@@ -13,8 +13,9 @@ import de.ka.javacity.system.IFamilyManager;
 import de.ka.javacity.system.ISystem;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.glDeleteProgram;
-import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.*;
+//import static org.lwjgl.opengl.GL20.glDeleteProgram;
+//import static org.lwjgl.opengl.GL20.glUseProgram;
 
 public class RenderSystem3D implements ISystem {
 
@@ -22,8 +23,8 @@ public class RenderSystem3D implements ISystem {
 	private GameCamera camera;
 	private float renderDistance;
 	
-	private final String VERTEX_SHADER_LOCATION = "src/de/ka/javacity/shader/pixel_phong_lighting.vs";
-	private final String FRAGMENT_SHADER_LOCATION = "src/de/ka/javacity/shader/pixel_phong_lighting.fs";
+	private final String VERTEX_SHADER_LOCATION = "src/de/ka/javacity/shader/ScreenSpaceAmbientOcclusion.vert";
+	private final String FRAGMENT_SHADER_LOCATION = "src/de/ka/javacity/shader/ScreenSpaceAmbientOcclusion_LowQuality.frag";
     private int shaderProgram;
 	
 	public RenderSystem3D(IFamilyManager familyManager, GameCamera camera) {
@@ -31,9 +32,17 @@ public class RenderSystem3D implements ISystem {
 		this.camera = camera;
 		this.renderDistance = camera.getRenderDistance();
 		
-		System.out.println(shaderProgram);
+		// load SSAO Shader
 		shaderProgram = ShaderLoader.loadShaderPair(VERTEX_SHADER_LOCATION, FRAGMENT_SHADER_LOCATION);
-		System.out.println(shaderProgram);
+		
+		// Setup variables
+		ShaderLoader.setFloatUniformVariable(shaderProgram, "TextureSurfaceHeightScale", 1.0f);
+		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionSampleStepDistance", 0.005f);
+		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionInvDistanceFactor", 1.0f);
+		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionIntensity", 1.5f);
+		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionAmbientIntensity", 1.3f);
+		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionBias", 0.2f);
+		ShaderLoader.setFloatUniformVariable(shaderProgram, "InvSurfaceHeightOcclusionFactor", 0.95f);
 	}
 	
 	@Override
@@ -52,7 +61,7 @@ public class RenderSystem3D implements ISystem {
 		float camDirection = (float) ((float)((camera.getYaw()%360f) * Math.PI / 180f)+Math.PI/2);
 
 		// use shader
-		glUseProgram(shaderProgram);
+//		glUseProgram(shaderProgram);
 			
 		for (AbstractNode node : renderNodes) {
 			RenderNode3D renderNode = (RenderNode3D) node;
@@ -72,13 +81,13 @@ public class RenderSystem3D implements ISystem {
 			float distance = (float) Math.sqrt((double)(dx*dx + dz*dz));
 			float angle = (float) (Math.atan2(dz, dx) + Math.PI);
 						
-			if (distance < this.renderDistance) { // && !(angle > camDirection - Math.PI/2 && angle < camDirection + Math.PI/2)) {
+			if (distance < this.renderDistance && !(angle > camDirection - Math.PI/2 && angle < camDirection + Math.PI/2)) {
 				renderNode.getDisplay().getView().draw(x, y,z, renderNode.getMotion().getRx(), renderNode.getMotion().getRy(), renderNode.getMotion().getRz());
 			}
 		}
 		
 		// deactivate shader
-		 glUseProgram(0);
+//		 glUseProgram(0);
 	}
 
 }

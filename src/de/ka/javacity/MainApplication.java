@@ -86,7 +86,7 @@ public class MainApplication {
 		this.lastFPS = this.getTime();
 
 		// Create FPS Camera 
-		GameCamera camera = new BasicFPSCamera(0, -30, 0);		
+		GameCamera camera = new BasicFPSCamera(0, -180, 0);		
 		camera.setRenderDistance(20);
 		
 		Mouse.setGrabbed(true);
@@ -153,7 +153,7 @@ public class MainApplication {
 			// UpdateWorld
 			
 			// Translate light			
-			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 128f*3, -30.0f*3, 128f*3, 0.5f}));
+			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{camera.getPosition().x, camera.getPosition().y, camera.getPosition().z, 0f}));//new float[]{ 128f*3, -30.0f*3, 128f*3, 0.5f}));
 			
 			// camera
 			glLoadIdentity();

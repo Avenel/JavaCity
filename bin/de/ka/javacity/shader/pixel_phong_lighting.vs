@@ -8,7 +8,7 @@ void main() {
 
 	vec3 lightDirection = normalize(gl_LightSource[0].position.xyz - vertexPosition);
 
-	vec3 surfaceNormal  = (gl_NormalMatrix * gl_Normal).xyz;
+	vec3 surfaceNormal  = normalize((gl_NormalMatrix * gl_Normal)).xyz;
 
 	float diffuseLightIntensity = max(0, dot(surfaceNormal, lightDirection));
 
@@ -25,8 +25,6 @@ void main() {
 	
 		varyingColour.rgb += vec3(fspecular, fspecular, fspecular);
 	}
-
-	//varyingColour.rgb = gl_Color.rgb;
-
+	
     gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 }
