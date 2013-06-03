@@ -23,8 +23,8 @@ public class RenderSystem3D implements ISystem {
 	private GameCamera camera;
 	private float renderDistance;
 	
-	private final String VERTEX_SHADER_LOCATION = "src/de/ka/javacity/shader/ScreenSpaceAmbientOcclusion.vert";
-	private final String FRAGMENT_SHADER_LOCATION = "src/de/ka/javacity/shader/ScreenSpaceAmbientOcclusion_LowQuality.frag";
+	private final String VERTEX_SHADER_LOCATION = "src/de/ka/javacity/shader/pixel_phong_lighting.vs";
+	private final String FRAGMENT_SHADER_LOCATION = "src/de/ka/javacity/shader/pixel_phong_lighting.fs";
     private int shaderProgram;
 	
 	public RenderSystem3D(IFamilyManager familyManager, GameCamera camera) {
@@ -35,14 +35,14 @@ public class RenderSystem3D implements ISystem {
 		// load SSAO Shader
 		shaderProgram = ShaderLoader.loadShaderPair(VERTEX_SHADER_LOCATION, FRAGMENT_SHADER_LOCATION);
 		
-		// Setup variables
-		ShaderLoader.setFloatUniformVariable(shaderProgram, "TextureSurfaceHeightScale", 1.0f);
-		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionSampleStepDistance", 0.005f);
-		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionInvDistanceFactor", 1.0f);
-		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionIntensity", 1.5f);
-		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionAmbientIntensity", 1.3f);
-		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionBias", 0.2f);
-		ShaderLoader.setFloatUniformVariable(shaderProgram, "InvSurfaceHeightOcclusionFactor", 0.95f);
+//		 Setup variables
+//		ShaderLoader.setFloatUniformVariable(shaderProgram, "TextureSurfaceHeightScale", 1.0f);
+//		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionSampleStepDistance", 0.005f);
+//		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionInvDistanceFactor", 1.0f);
+//		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionIntensity", 1.5f);
+//		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionAmbientIntensity", 1.3f);
+//		ShaderLoader.setFloatUniformVariable(shaderProgram, "OcclusionBias", 0.2f);
+//		ShaderLoader.setFloatUniformVariable(shaderProgram, "InvSurfaceHeightOcclusionFactor", 0.95f);
 	}
 	
 	@Override

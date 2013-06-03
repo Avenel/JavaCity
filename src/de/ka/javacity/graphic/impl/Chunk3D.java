@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL15.*;
 public class Chunk3D implements IView3D {
 
 	int bufferId;
+	int normalsId;
 	int colorId;
 	
 	int amountOfVertices;
@@ -34,6 +35,7 @@ public class Chunk3D implements IView3D {
 	
 	public Chunk3D(BoxType boxes[][][], float blockSize) {
 		this.bufferId = 0;
+		this.normalsId = 0;
 		this.colorId = 0;
 		
 		this.boxes = boxes;
@@ -55,8 +57,9 @@ public class Chunk3D implements IView3D {
 	
 	@Override
 	public void draw(float x, float y, float z, float rx, float ry, float rz) {
-		if (this.bufferId == 0 || this.colorId == 0) {
+		if (this.bufferId == 0 || this.normalsId == 0 || this.colorId == 0) {
 			this.bufferId = createVBOID();
+			this.normalsId = createVBOID();
 			this.colorId = createVBOID();
 			
 			this.offsetX = x;
@@ -69,6 +72,10 @@ public class Chunk3D implements IView3D {
 			
 			// Vertex Data
 			this.pushVertexBufferData(this.bufferId, this.createVerticesBufferData(this.boxes));
+			
+			// Normal Data
+			this.pushVertexBufferData(this.normalsId, this.createNormalsBufferData(this.boxes));
+			
 			// Color Data
 			this.pushVertexBufferData(this.colorId, this.createColorBufferData(this.boxes));
 		} else {
@@ -77,15 +84,20 @@ public class Chunk3D implements IView3D {
 				glBindBuffer(GL_ARRAY_BUFFER, this.bufferId);
 				glVertexPointer(this.verticeSize, GL_FLOAT, 0, 0L);
 				
+				glBindBuffer(GL_ARRAY_BUFFER, this.normalsId);
+				glNormalPointer(GL_FLOAT, 0, 0L); 
+				
 				glBindBuffer(GL_ARRAY_BUFFER, this.colorId);
 				glColorPointer(this.colorSize, GL_FLOAT, 0, 0L);
 				
 				glEnableClientState(GL_VERTEX_ARRAY);
+				glEnableClientState(GL_NORMAL_ARRAY);
 				glEnableClientState(GL_COLOR_ARRAY);
 				
 				glDrawArrays(GL_QUADS, 0, this.amountOfVertices);
 				
 				glDisableClientState(GL_VERTEX_ARRAY);
+				glDisableClientState(GL_NORMAL_ARRAY);
 				glDisableClientState(GL_COLOR_ARRAY);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -133,6 +145,65 @@ public class Chunk3D implements IView3D {
 		return vertexData;
 	}
 	
+	/**
+	 * Generate Boxes
+	 * @param boxes
+	 * @return bufferData which contains the box-vertices 
+	 */
+	private FloatBuffer createNormalsBufferData(BoxType[][][] boxes) {		
+		// Initialize FloatBuffer
+		FloatBuffer normalsData = BufferUtils.createFloatBuffer(this.amountOfVertices * this.verticeSize);
+
+		for (Vector3f vector : this.enabledBoxes) {
+			normalsData.put(createSingleBoxNormalData());
+		}
+		
+		normalsData.flip();
+		return normalsData;
+	}
+	
+	private float[] createSingleBoxNormalData() {
+		float normalsData[] = new float[] {
+				// left
+				-1, 0, 0,
+				-1, 0, 0,
+				-1, 0, 0,
+				-1, 0, 0,
+				
+				// right
+				1, 0, 0,
+				1, 0, 0,
+				1, 0, 0,
+				1, 0, 0,
+				
+				// bottom
+				0, -1, 0,
+				0, -1, 0,
+				0, -1, 0,
+				0, -1, 0,
+				
+				// top
+				0, 1, 0,
+				0, 1, 0,
+				0, 1, 0,
+				0, 1, 0,
+				
+				// back
+				0, 0, -1,
+				0, 0, -1,
+				0, 0, -1,
+				0, 0, -1,
+				
+				// front
+				0, 0, 1,
+				0, 0, 1,
+				0, 0, 1,
+				0, 0, 1				
+		};
+		
+		return normalsData;
+	}
+
 	private FloatBuffer createColorBufferData(BoxType[][][] boxes) {				
 		// Initialize FloatBuffer
 		FloatBuffer colorData = BufferUtils.createFloatBuffer(this.amountOfVertices * this.colorSize);

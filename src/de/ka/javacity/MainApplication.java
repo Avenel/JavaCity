@@ -56,30 +56,27 @@ public class MainApplication {
 		
 		// init simple ambientlight
 		glEnable(GL_LIGHTING);
+		glShadeModel(GL_SMOOTH);
 		glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);//asFloatBuffer(new float[]{0.001f, 0.001f, 0.001f, 1f}));
-		glLightModel(GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.0f, 0.0f, 0.0f, 1.0f}));
+		glLightModel(GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.2f, 0.2f, 0.2f, 1.0f}));
 		
 		glEnable(GL_LIGHT0);
-		glLight(GL_LIGHT0, GL_SPECULAR, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 1f}));
-		glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 200*2f, 0f, 30f, 1f}));
-		glLight(GL_LIGHT0, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, 1f, 0f, 1f}));
+		glLight(GL_LIGHT0, GL_SPECULAR, asFloatBuffer(new float[]{0.8f, 0.8f, 0.8f, 1.0f}));
+		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45);
+		glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1.0f); 
 		
-		//glEnable(GL_LIGHT1);
-		glLight(GL_LIGHT1, GL_SPECULAR, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 0f}));
-		glLight(GL_LIGHT1, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, 0f, -1f, 0f}));
+		glEnable(GL_LIGHT1);
+		glLight(GL_LIGHT1, GL_DIFFUSE, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 0f}));
+	
 		
 		// Culling
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		
-		// Material Color
-		glShadeModel(GL_SMOOTH);
+		// Material Color		
 		glEnable(GL_COLOR_MATERIAL);
-		
-		glMaterialf(GL_FRONT, GL_SHININESS, 128f);
-		
-		glColorMaterial(GL_FRONT, GL_DIFFUSE);
-        glColor3f(0.4f, 0.27f, 0.17f);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 128f);
+		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
         glEnable(GL_DEPTH_TEST); 
 
@@ -154,23 +151,70 @@ public class MainApplication {
 			
 					
 			// UpdateWorld
-			
-			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 100*2f, 10f, 100f*2f, 1f}));
-			glLight(GL_LIGHT0, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, 1f, 1f, 1f}));
-			
+		
 			// camera
 			glLoadIdentity();
 			camera.lookThrough();
 			
 			
 			// Translate light			
-			//glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{camera.getPosition().x, camera.getPosition().y, camera.getPosition().z, 0f}));//
+			float x = 256f*2f;
+			float y = 5f;
+			float z = 256f*2f;
+			float size = 1f;
 			
+			glLight(GL_LIGHT0, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{-1f, 0f, 1f, 1f}));
+			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ x, y, z, 1f}));
 			
-//			glLight(GL_LIGHT1, GL_POSITION, asFloatBuffer(new float[]{ 128f, 0.0f, 128f, 0f}));
-//			glLight(GL_LIGHT1, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, -1f, -1f, 0f}));
-			//glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{camera.getPosition().x, camera.getPosition().y, camera.getPosition().z, 0f}));//new float[]{ 128f*3, -30.0f*3, 128f*3, 0.5f}));
-					
+			glLight(GL_LIGHT1, GL_POSITION, asFloatBuffer(new float[]{ x, y, z, 0f}));
+			
+			// draw Lightbox
+			
+			glPushMatrix();
+			glTranslatef(x, y, z);
+
+			glBegin(GL_QUADS);
+				// left
+				glVertex3f(-size, -size, -size);
+				glVertex3f(-size, -size, size);
+				glVertex3f(-size, size, size);
+				glVertex3f(-size, size, -size);
+
+				// right
+				glVertex3f(size, size, -size);
+				glVertex3f(size, size, size);
+				glVertex3f(size, -size, size);
+				glVertex3f(size, -size, -size);
+
+				// bottom
+				glVertex3f(size, -size, -size);
+				glVertex3f(size, -size, size);
+				glVertex3f(-size, -size, size);
+				glVertex3f(-size, -size, -size);
+
+				// top
+				glVertex3f(-size, size, -size);
+				glVertex3f(-size, size, size);
+				glVertex3f(size, size, size);
+				glVertex3f(size, size, -size);
+
+				// back
+				glVertex3f(-size, -size, -size);
+				glVertex3f(-size, size, -size);
+				glVertex3f(size, size, -size);
+				glVertex3f(size, -size, -size);
+
+				// front
+				glVertex3f(size, -size, size);
+				glVertex3f(size, size, size);
+				glVertex3f(-size, size, size);
+				glVertex3f(-size, -size, size);
+
+			glEnd();
+			glPopMatrix();
+			
+	
+			
 			// Update everything, includes rendering objects
 			game.update();
 
