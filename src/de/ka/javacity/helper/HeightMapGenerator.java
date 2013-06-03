@@ -20,7 +20,7 @@ public class HeightMapGenerator {
 	public int[][] generate(int amountOfMontains) {
 		int[][] map = new int[this.size][this.size];
 		
-		float frequency=(1.0f/((float)this.size))*4;
+		float frequency=(1.0f/((float)this.size))*amountOfMontains;
 		
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map.length; y++) {
