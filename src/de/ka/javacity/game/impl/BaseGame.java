@@ -58,8 +58,8 @@ public class BaseGame extends AbstractGame {
 	}
 	
 	public void createTestBlob(float x, float y, float z) {
-		int worldsize = 512;
-		int worldHeight = 64; 
+		int worldsize = 256;
+		int worldHeight = 32; 
 		int chunksize = 16;
 		float blockSize = 1.0f;
 		

@@ -24,7 +24,6 @@ public class HeightMapGenerator {
 		
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map.length; y++) {
-				System.out.println(Math.abs(Noise.noise(x*frequency, y*frequency)) * this.maxHeight);
 				map[x][y] = (int)(Math.abs(Noise.noise(x*frequency, y*frequency)) * this.maxHeight);
 			}
 		}

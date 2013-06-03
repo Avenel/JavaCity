@@ -14,11 +14,8 @@ import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 import de.ka.javacity.cam.GameCamera;
 import de.ka.javacity.cam.impl.BasicFPSCamera;
-import de.ka.javacity.component.impl.Chunk.BoxType;
 import de.ka.javacity.game.AbstractGame;
 import de.ka.javacity.game.impl.BaseGame;
-import de.ka.javacity.helper.HeightMapGenerator;
-import de.ka.javacity.helper.WorldGenerator;
 
 /**
  * Main for JavaCity
@@ -59,11 +56,17 @@ public class MainApplication {
 		
 		// init simple ambientlight
 		glEnable(GL_LIGHTING);
-		glLightModel(GL_AMBIENT, asFloatBuffer(new float[]{0.002f, 0.002f, 0.002f, 0f}));
+		glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);//asFloatBuffer(new float[]{0.001f, 0.001f, 0.001f, 1f}));
+		glLightModel(GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.0f, 0.0f, 0.0f, 1.0f}));
 		
 		glEnable(GL_LIGHT0);
-		glLightModel(GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.005f, 0.005f, 0.005f, 0f}));
-		//glLight(GL_LIGHT0, GL_DIFFUSE, asFloatBuffer(new float[]{0.2f, 0.2f, 0.2f, 0f}));
+		glLight(GL_LIGHT0, GL_SPECULAR, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 1f}));
+		glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 200*2f, 0f, 30f, 1f}));
+		glLight(GL_LIGHT0, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, 1f, 0f, 1f}));
+		
+		//glEnable(GL_LIGHT1);
+		glLight(GL_LIGHT1, GL_SPECULAR, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 0f}));
+		glLight(GL_LIGHT1, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, 0f, -1f, 0f}));
 		
 		// Culling
 		glEnable(GL_CULL_FACE);
@@ -152,15 +155,25 @@ public class MainApplication {
 					
 			// UpdateWorld
 			
-			// Translate light			
-			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{camera.getPosition().x, camera.getPosition().y, camera.getPosition().z, 0f}));//new float[]{ 128f*3, -30.0f*3, 128f*3, 0.5f}));
+			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ 100*2f, 10f, 100f*2f, 1f}));
+			glLight(GL_LIGHT0, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, 1f, 1f, 1f}));
 			
 			// camera
 			glLoadIdentity();
 			camera.lookThrough();
 			
+			
+			// Translate light			
+			//glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{camera.getPosition().x, camera.getPosition().y, camera.getPosition().z, 0f}));//
+			
+			
+//			glLight(GL_LIGHT1, GL_POSITION, asFloatBuffer(new float[]{ 128f, 0.0f, 128f, 0f}));
+//			glLight(GL_LIGHT1, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, -1f, -1f, 0f}));
+			//glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{camera.getPosition().x, camera.getPosition().y, camera.getPosition().z, 0f}));//new float[]{ 128f*3, -30.0f*3, 128f*3, 0.5f}));
+					
 			// Update everything, includes rendering objects
 			game.update();
+
 			
 			// Update fps
 			this.updateFPS();

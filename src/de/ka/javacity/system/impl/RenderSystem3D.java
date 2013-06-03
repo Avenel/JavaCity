@@ -81,7 +81,7 @@ public class RenderSystem3D implements ISystem {
 			float distance = (float) Math.sqrt((double)(dx*dx + dz*dz));
 			float angle = (float) (Math.atan2(dz, dx) + Math.PI);
 						
-			if (distance < this.renderDistance && !(angle > camDirection - Math.PI/2 && angle < camDirection + Math.PI/2)) {
+			if (distance < this.renderDistance) { // && !(angle > camDirection - Math.PI/2 && angle < camDirection + Math.PI/2)) {
 				renderNode.getDisplay().getView().draw(x, y,z, renderNode.getMotion().getRx(), renderNode.getMotion().getRy(), renderNode.getMotion().getRz());
 			}
 		}
