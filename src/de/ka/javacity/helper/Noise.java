@@ -10,7 +10,7 @@ package de.ka.javacity.helper;
 */
 public final class Noise {
 
- public static int seed = 1003123;
+ public static int seed = 107217397;
 
  private static final int P = 8;
  private static final int B = 1 << P;

@@ -54,6 +54,12 @@ public class MainApplication {
 		glViewport(0, 0, game.getWindow_width(), game.getWindow_height());
 		glMatrixMode(GL_MODELVIEW);		
 		
+		// init quality settings
+		glPolygonMode(GL_FRONT, GL_FILL);
+		glEnable(GL_POLYGON_SMOOTH);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+		
 		// init simple ambientlight
 		glEnable(GL_LIGHTING);
 		glShadeModel(GL_SMOOTH);
@@ -61,13 +67,10 @@ public class MainApplication {
 		glLightModel(GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.2f, 0.2f, 0.2f, 1.0f}));
 		
 		glEnable(GL_LIGHT0);
-		glLight(GL_LIGHT0, GL_SPECULAR, asFloatBuffer(new float[]{0.8f, 0.8f, 0.8f, 1.0f}));
-		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45);
-		glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1.0f); 
+		glLight(GL_LIGHT0, GL_DIFFUSE, asFloatBuffer(new float[]{0.8f, 0.8f, 0.8f, 1.0f}));
+		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180f);
+		glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 100.0f); 
 		
-		glEnable(GL_LIGHT1);
-		glLight(GL_LIGHT1, GL_DIFFUSE, asFloatBuffer(new float[]{0.5f, 0.5f, 0.5f, 0f}));
-	
 		
 		// Culling
 		glEnable(GL_CULL_FACE);
@@ -158,15 +161,13 @@ public class MainApplication {
 			
 			
 			// Translate light			
-			float x = 256f*2f;
-			float y = 5f;
-			float z = 256f*2f;
-			float size = 1f;
+			float x = 128f*2f;
+			float y = 400f;
+			float z = 128f*2f;
+			float size = 2f;
 			
-			glLight(GL_LIGHT0, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{-1f, 0f, 1f, 1f}));
+			glLight(GL_LIGHT0, GL_SPOT_DIRECTION, asFloatBuffer(new float[]{0f, -1f, 0f, 1f}));
 			glLight(GL_LIGHT0, GL_POSITION, asFloatBuffer(new float[]{ x, y, z, 1f}));
-			
-			glLight(GL_LIGHT1, GL_POSITION, asFloatBuffer(new float[]{ x, y, z, 0f}));
 			
 			// draw Lightbox
 			

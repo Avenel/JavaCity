@@ -29,7 +29,7 @@ public class HeightMapGenerator {
 		}
 
 		// generate moutains
-		/*for (int i=0; i<amountOfMontains; i++) {
+		/* for (int i=0; i<amountOfMontains; i++) {
 			
 			int mountainX = (int)(Math.random() * this.size);
 			int mountainY = (int)(Math.random() * this.size);
@@ -65,7 +65,7 @@ public class HeightMapGenerator {
 					}
 				}
 			}
-		} */
+		}*/ 
 	
 		return map;
 	}

@@ -31,8 +31,10 @@ public class Chunk3D implements IView3D {
 	float blockSize;
 	
 	BoxType boxes [][][];
+	boolean enabledFaces [][][][];
+	int enabledFacesCount;
 	ArrayList<Vector3f> enabledBoxes;
-	
+
 	public Chunk3D(BoxType boxes[][][], float blockSize) {
 		this.bufferId = 0;
 		this.normalsId = 0;
@@ -68,7 +70,7 @@ public class Chunk3D implements IView3D {
 			
 			// Create Boxes (BufferData)	
 			this.enabledBoxes = this.memorizeNotEnclosedBoxes(boxes);
-			this.amountOfVertices = this.countEnabledBoxes() * 24;
+			this.amountOfVertices = this.enabledFacesCount*4;
 			
 			// Vertex Data
 			this.pushVertexBufferData(this.bufferId, this.createVerticesBufferData(this.boxes));
@@ -135,10 +137,13 @@ public class Chunk3D implements IView3D {
 		FloatBuffer vertexData = BufferUtils.createFloatBuffer(this.amountOfVertices * this.verticeSize);
 
 		for (Vector3f vector : this.enabledBoxes) {
-			vertexData.put(createSingleBoxData(
-							(vector.getX() + this.offsetX) * this.blockSize*2, 
-							(vector.getY() + this.offsetY) * this.blockSize*2, 
-							(vector.getZ() + this.offsetZ) * this.blockSize*2));
+			for (int i=0; i<6; i++) {
+				if (this.enabledFaces[(int) vector.getX()][(int) vector.getY()][(int) vector.getZ()][i]) {
+					vertexData.put(this.createFaceData(i,(vector.getX() + this.offsetX) * this.blockSize*2, 
+								(vector.getY() + this.offsetY) * this.blockSize*2, 
+								(vector.getZ() + this.offsetZ) * this.blockSize*2));
+				}
+			}
 		}
 		
 		vertexData.flip();
@@ -155,55 +160,17 @@ public class Chunk3D implements IView3D {
 		FloatBuffer normalsData = BufferUtils.createFloatBuffer(this.amountOfVertices * this.verticeSize);
 
 		for (Vector3f vector : this.enabledBoxes) {
-			normalsData.put(createSingleBoxNormalData());
+			for (int i = 0; i < 6; i++) {
+				if (this.enabledFaces[(int) vector.getX()][(int) vector.getY()][(int) vector.getZ()][i]) {
+					normalsData.put(this.createFaceNormal(i));
+				}
+			}
 		}
 		
 		normalsData.flip();
 		return normalsData;
 	}
 	
-	private float[] createSingleBoxNormalData() {
-		float normalsData[] = new float[] {
-				// left
-				-1, 0, 0,
-				-1, 0, 0,
-				-1, 0, 0,
-				-1, 0, 0,
-				
-				// right
-				1, 0, 0,
-				1, 0, 0,
-				1, 0, 0,
-				1, 0, 0,
-				
-				// bottom
-				0, -1, 0,
-				0, -1, 0,
-				0, -1, 0,
-				0, -1, 0,
-				
-				// top
-				0, 1, 0,
-				0, 1, 0,
-				0, 1, 0,
-				0, 1, 0,
-				
-				// back
-				0, 0, -1,
-				0, 0, -1,
-				0, 0, -1,
-				0, 0, -1,
-				
-				// front
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1,
-				0, 0, 1				
-		};
-		
-		return normalsData;
-	}
-
 	private FloatBuffer createColorBufferData(BoxType[][][] boxes) {				
 		// Initialize FloatBuffer
 		FloatBuffer colorData = BufferUtils.createFloatBuffer(this.amountOfVertices * this.colorSize);
@@ -212,8 +179,12 @@ public class Chunk3D implements IView3D {
 			BoxType type = boxes[(int)vector.getX()][(int)vector.getY()][(int)vector.getZ()];
 			float[] colors = createBoxColorData(type);
 		
-			for (int i=0; i < 24; i++) {
-				colorData.put(colors);
+			for (int i=0; i < 6; i++) {
+				for (int j=0; j < 4; j++) {
+					if (this.enabledFaces[(int) vector.getX()][(int) vector.getY()][(int) vector.getZ()][i]) {
+						colorData.put(colors);
+					}
+				}
 			}
 
 		}
@@ -222,52 +193,131 @@ public class Chunk3D implements IView3D {
 		return colorData;
 	}
 	
-	/**
-	 * Generate a single box
-	 * @param type
-	 * @param offset
-	 * @return bufferData for a single box
-	 */
-	private float[] createSingleBoxData(float offsetX, float offsetY, float offsetZ) {
-		float boxData[] = new float[] {							
-				// left
-				-this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
-				-this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
-				-this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
-				-this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
+	private float[] createFaceNormal(int face) {
+		float[] faceNormal = new float[]{};
 		
-				// right
-				this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
-				this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
-				this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
-				this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
-
-				// bottom
-				this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
-				this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
-				-this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
-				-this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
-
-				// top
-				-this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
-				-this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
-				this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
-				this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
-				
-				// back
-				-this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
-				-this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
-				this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
-				this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
-				
-				// front
-				this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
-				this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
-				-this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
-				-this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ
-		};
-
-		return boxData;
+		switch(face) {
+			// left
+			case 0:
+				faceNormal = new float[] {
+						-1, 0, 0,
+						-1, 0, 0,
+						-1, 0, 0,
+						-1, 0, 0
+				};
+				break;
+			// right
+			case 1:
+				faceNormal = new float[] {
+					1, 0, 0,
+					1, 0, 0,
+					1, 0, 0,
+					1, 0, 0
+				};
+				break;
+			// bottom
+			case 2:
+				faceNormal = new float[] {
+					0, -1, 0,
+					0, -1, 0,
+					0, -1, 0,
+					0, -1, 0
+				};
+				break;
+			// top 
+			case 3:
+				faceNormal = new float[] {
+					0, 1, 0,
+					0, 1, 0,
+					0, 1, 0,
+					0, 1, 0
+				};
+				break;
+			// back
+			case 4:
+				faceNormal = new float[] {
+					0, 0, -1,
+					0, 0, -1,
+					0, 0, -1,
+					0, 0, -1
+				};
+				break;
+			// front
+			case 5:
+				faceNormal = new float[] {
+					0, 0, 1,
+					0, 0, 1,
+					0, 0, 1,
+					0, 0, 1
+				};
+				break;
+		}
+		
+		return faceNormal;
+		
+	}
+		
+	private float[] createFaceData(int face, float offsetX, float offsetY, float offsetZ) {
+		float[] faceData = new float[]{};
+		
+		switch(face) {
+			// left
+			case 0:
+				faceData = new float[] {
+					-this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
+					-this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
+					-this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
+					-this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ
+				};
+				break;
+			// right
+			case 1:
+				faceData = new float[] {
+						this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
+						this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
+						this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
+						this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ
+				};
+				break;
+			// bottom
+			case 2:
+				faceData = new float[] {
+						this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
+						this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
+						-this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
+						-this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ
+				};
+				break;
+			// top 
+			case 3:
+				faceData = new float[] {
+						-this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
+						-this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
+						this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
+						this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ
+				};
+				break;
+			// back
+			case 4:
+				faceData = new float[] {
+						-this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ,
+						-this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
+						this.blockSize + offsetX, this.blockSize + offsetY, -this.blockSize + offsetZ,
+						this.blockSize + offsetX, -this.blockSize + offsetY, -this.blockSize + offsetZ
+				};
+				break;
+			// front
+			case 5:
+				faceData = new float[] {
+						this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ,
+						this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
+						-this.blockSize + offsetX, this.blockSize + offsetY, this.blockSize + offsetZ,
+						-this.blockSize + offsetX, -this.blockSize + offsetY, this.blockSize + offsetZ
+				};
+				break;
+		}
+		
+		return faceData;
 	}
 	
 	private float[] createBoxColorData(BoxType type) {
@@ -297,7 +347,9 @@ public class Chunk3D implements IView3D {
 	
 	private ArrayList<Vector3f> memorizeNotEnclosedBoxes(BoxType[][][] boxes) {
 		ArrayList<Vector3f> listOfBoxes = new ArrayList<Vector3f>();
-			
+		
+		this.enabledFaces = new boolean[boxes.length][boxes[0].length][boxes[0][0].length][6];
+		
 		// go through cube (chunk)
 		for (int x=0; x < boxes.length; x++) {
 			for (int y=0; y < boxes.length; y++) {
@@ -308,6 +360,12 @@ public class Chunk3D implements IView3D {
 						if (x == 0 || x == boxes.length-1 || y == 0 || y == boxes[0].length-1 || 
 							z == 0 || z == boxes[0][0].length-1) {
 							listOfBoxes.add(new Vector3f(x, y, z));
+
+							// enable all faces
+							for (int i=0; i<6; i++) {
+								this.enabledFaces[x][y][z][i] = true;
+								this.enabledFacesCount++;
+							}
 						} else {					
 							// are there any neighbours?
 							if (	boxes[x-1][y][z] != BoxType.EMPTY && boxes[x+1][y][z] != BoxType.EMPTY &&
@@ -315,6 +373,38 @@ public class Chunk3D implements IView3D {
 									boxes[x][y][z-1] != BoxType.EMPTY && boxes[x][y][z+1] != BoxType.EMPTY ) {
 							} else {
 								listOfBoxes.add(new Vector3f(x, y, z));
+								
+								// activate faces
+								// left
+								if (boxes[x-1][y][z] == BoxType.EMPTY) {
+									this.enabledFaces[x][y][z][0] = true;
+									this.enabledFacesCount++;
+								}
+								// right
+								if (boxes[x+1][y][z] == BoxType.EMPTY) {
+									this.enabledFaces[x][y][z][1] = true;
+									this.enabledFacesCount++;
+								}
+								// bottom
+								if (boxes[x][y-1][z] == BoxType.EMPTY) {
+									this.enabledFaces[x][y][z][2] = true;
+									this.enabledFacesCount++;
+								}
+								// top
+								if (boxes[x][y+1][z] == BoxType.EMPTY) {
+									this.enabledFaces[x][y][z][3] = true;
+									this.enabledFacesCount++;
+								}
+								// back
+								if (boxes[x][y][z-1] == BoxType.EMPTY) {
+									this.enabledFaces[x][y][z][4] = true;
+									this.enabledFacesCount++;
+								}
+								// front
+								if (boxes[x][y][z+1] == BoxType.EMPTY) {
+									this.enabledFaces[x][y][z][5] = true;
+									this.enabledFacesCount++;
+								}
 							}
 						}
 					}
